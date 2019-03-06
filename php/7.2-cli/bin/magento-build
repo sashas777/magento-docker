@@ -26,7 +26,7 @@ if [ ! -f "$MAGENTO_ROOT/composer.json" ]; then
         --no-interaction \
         $MAGENTO_ROOT/$M2_SETUP_VERSION
 
-    mv $MAGENTO_ROOT/$M2_SETUP_VERSION/{.,}* $MAGENTO_ROOT/
+    rsync -az $MAGENTO_ROOT/$M2_SETUP_VERSION/ $MAGENTO_ROOT/
     rm -rf $MAGENTO_ROOT/$M2_SETUP_VERSION
 
     chown -R www-data:www-data $MAGENTO_ROOT

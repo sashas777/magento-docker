@@ -1,0 +1,59 @@
+version: '2'
+services:
+  db:
+    image: 'mariadb:10.0'
+    ports:
+      - 3306
+    volumes:
+      - /var/lib/mysql
+      - './docker/docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d'
+    environment:
+      - MYSQL_ROOT_PASSWORD=magento2
+      - MYSQL_DATABASE=magento2
+      - MYSQL_USER=magento2
+      - MYSQL_PASSWORD=magento2
+  fpm:
+    image: 'sashas777/magento-php:7.2-fpm'
+    ports:
+      - 9000
+    depends_on:
+      - db
+    volumes_from:
+      - appdata
+    volumes:
+      - '.:/var/www/magento:rw'
+  web:
+    image: 'sashas777/magento-nginx:latest'
+    ports:
+      - '443:443'
+    depends_on:
+      - fpm
+      - db
+    volumes_from:
+      - appdata
+    volumes:
+      - '.:/var/www/magento:rw'
+  cron:
+    image: 'sashas777/magento-php:7.2-cli'
+    hostname: cron.magento2.docker
+    depends_on:
+      - db
+    volumes:
+      - '~/.composer/cache:/root/.composer/cache'
+      - '.:/var/www/magento:rw'
+    volumes_from:
+      - appdata
+    command: run-cron
+    environment:
+      - M2_SETUP_VERSION=2.3.0
+      - COMPOSER_MAGENTO_USERNAME ""
+      - COMPOSER_MAGENTO_PASSWORD ""
+  appdata:
+    image: tianon/true
+    volumes:
+      - './docker/mnt:/mnt'
+      - /var/www/magento/vendor
+      - /var/www/magento/generated
+      - /var/www/magento/pub
+      - /var/www/magento/var
+      - /var/www/magento/app/etc

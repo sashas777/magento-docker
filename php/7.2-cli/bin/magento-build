@@ -18,16 +18,16 @@ echo "Building Magento ..."
 if [ ! -f "$MAGENTO_ROOT/composer.json" ]; then
     echo "Creating Magento ($M2SETUP_VERSION) project from composer"
 
-    mkdir $MAGENTO_ROOT/$M2SETUP_VERSION
+    mkdir $MAGENTO_ROOT/$M2_SETUP_VERSION
 
-    composer --working-dir=$MAGENTO_ROOT/$M2SETUP_VERSION create-project \
+    composer --working-dir=$MAGENTO_ROOT/$M2_SETUP_VERSION create-project \
         --repository-url=https://repo.magento.com/ \
-        magento/project-community-edition=$M2SETUP_VERSION \
+        magento/project-community-edition=$M2_SETUP_VERSION \
         --no-interaction \
-        $MAGENTO_ROOT/$M2SETUP_VERSION
+        $MAGENTO_ROOT/$M2_SETUP_VERSION
 
-    mv $MAGENTO_ROOT/$M2SETUP_VERSION/{.,}* $MAGENTO_ROOT/
-    rm -rf $MAGENTO_ROOT/$M2SETUP_VERSION
+    mv $MAGENTO_ROOT/$M2_SETUP_VERSION/{.,}* $MAGENTO_ROOT/
+    rm -rf $MAGENTO_ROOT/$M2_SETUP_VERSION
 
     chown -R www-data:www-data $MAGENTO_ROOT
 
@@ -44,6 +44,8 @@ if [ ! -f "$MAGENTO_ROOT/composer.json" ]; then
         --admin-email=$ADMIN_EMAIL \
         --admin-user=$ADMIN_USER \
         --admin-password=$ADMIN_PASSWORD"
+
+     $INSTALL_COMMAND
 else
     composer --working-dir=$MAGENTO_ROOT install --no-suggest --no-ansi --no-interaction --no-progress --prefer-dist
 fi

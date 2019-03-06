@@ -46,6 +46,11 @@ docker-compose start
 ```bash
 docker-compose down -v
 ```
+## Stop and remove all data 
+
+```bash
+docker-compose down -v --rmi all --remove-orphans
+```
 
 ## To update images
 

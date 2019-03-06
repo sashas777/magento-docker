@@ -29,9 +29,14 @@ if [ ! -f "$MAGENTO_ROOT/composer.json" ]; then
     rsync -az $MAGENTO_ROOT/$M2_SETUP_VERSION/ $MAGENTO_ROOT/
     rm -rf $MAGENTO_ROOT/$M2_SETUP_VERSION
 
-    chown -R www-data:www-data $MAGENTO_ROOT
+else
+    composer --working-dir=$MAGENTO_ROOT install --no-suggest --no-ansi --no-interaction --no-progress --prefer-dist
+fi
 
-    echo "Install Magento"
+chown -R www-data:www-data $MAGENTO_ROOT
+
+if [ ! -f "$MAGENTO_ROOT/app/etc/env.php" ]; then
+  echo "Install Magento"
 
     INSTALL_COMMAND="$MAGENTO_COMMAND setup:install \
         --db-host=db \
@@ -46,8 +51,6 @@ if [ ! -f "$MAGENTO_ROOT/composer.json" ]; then
         --admin-password=$ADMIN_PASSWORD"
 
      $INSTALL_COMMAND
-else
-    composer --working-dir=$MAGENTO_ROOT install --no-suggest --no-ansi --no-interaction --no-progress --prefer-dist
 fi
 
 chown -R www-data:www-data $MAGENTO_ROOT

@@ -1,5 +1,8 @@
 FROM php:7.1-fpm
 
+ENV TZ=America/New_York
+RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
+
 # Install dependencies
 RUN apt-get update \
   && apt-get install -y \
@@ -22,7 +25,7 @@ RUN docker-php-ext-install dom gd intl mbstring pdo_mysql xsl zip bcmath soap so
 
 RUN pecl install -o -f xdebug
 
-ENV PHP_MEMORY_LIMIT 2G
+ENV PHP_MEMORY_LIMIT 4G
 ENV PHP_ENABLE_XDEBUG false
 ENV MAGENTO_ROOT /var/www/magento
 
@@ -37,7 +40,7 @@ RUN ["chmod", "+x", "/docker-entrypoint.sh"]
 
 ENTRYPOINT ["/docker-entrypoint.sh"]
 
-ENV MAGENTO_RUN_MODE production
+ENV MAGENTO_RUN_MODE developer
 ENV UPLOAD_MAX_FILESIZE 64M
 
 COPY etc/php-fpm.ini /usr/local/etc/php/conf.d/zz-magento.ini

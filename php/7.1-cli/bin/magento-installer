@@ -4,8 +4,9 @@ set -e
 
 [ "$DEBUG" = "true" ] && set -x
 
-BUILD_COMMAND="cloud-build"
-DEPLOY_COMMAND="cloud-deploy"
+BUILD_COMMAND="magento-build"
+DEPLOY_COMMAND="magento-deploy"
 
+# Configure Sendmail if required
 $BUILD_COMMAND
 $DEPLOY_COMMAND

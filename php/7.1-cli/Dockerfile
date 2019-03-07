@@ -1,5 +1,8 @@
 FROM php:7.1-cli
 
+ENV TZ=America/New_York
+RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
+
 # Install dependencies
 RUN apt-get update \
   && apt-get install -y \
@@ -29,7 +32,7 @@ RUN docker-php-ext-install dom gd intl mbstring pdo_mysql xsl zip bcmath soap so
 
 RUN pecl install -o -f xdebug
 
-ENV PHP_MEMORY_LIMIT 2G
+ENV PHP_MEMORY_LIMIT 4G
 ENV PHP_ENABLE_XDEBUG false
 ENV MAGENTO_ROOT /var/www/magento
 ENV DEBUG false
@@ -56,9 +59,8 @@ ADD bin/* /usr/local/bin/
 
 RUN ["chmod", "+x", "/usr/local/bin/magento-installer"]
 RUN ["chmod", "+x", "/usr/local/bin/magento-command"]
-RUN ["chmod", "+x", "/usr/local/bin/ece-command"]
-RUN ["chmod", "+x", "/usr/local/bin/cloud-build"]
-RUN ["chmod", "+x", "/usr/local/bin/cloud-deploy"]
+RUN ["chmod", "+x", "/usr/local/bin/magento-build"]
+RUN ["chmod", "+x", "/usr/local/bin/magento-deploy"]
 RUN ["chmod", "+x", "/usr/local/bin/run-cron"]
 
 WORKDIR ${MAGENTO_ROOT}

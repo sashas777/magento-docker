@@ -59,6 +59,15 @@ if [ ! -f "$MAGENTO_ROOT/app/etc/env.php" ]; then
      $INSTALL_COMMAND
 fi
 
+if [ -d "$MAGENTO_ROOT/m2-hotfixes" ]; then
+ echo "Install Patches..."
+  for patch in $MAGENTO_ROOT/m2-hotfixes/*.patch
+  do
+    echo "Applying $patch"
+    patch -p1 < $patch
+  done
+fi
+
 chown -R www-data:www-data $MAGENTO_ROOT
 
 echo "Fixing file permissions..."

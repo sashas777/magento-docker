@@ -55,8 +55,6 @@ ADD etc/php-cli.ini /usr/local/etc/php/conf.d/zz-magento.ini
 # Get composer installed to /usr/local/bin/composer
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 
-ADD etc/auth.json ${MAGENTO_ROOT}/docker-auth.json
-
 RUN composer global require hirak/prestissimo
 
 ADD bin/* /usr/local/bin/

@@ -85,5 +85,10 @@ docker-compose run cli magento-command
 
 ## Quick reference
 
-* [Importing DB dump](https://devdocs.magento.com/guides/v2.3/cloud/docker/docker-development.html#database-container)
-* [Checking cron logs](https://devdocs.magento.com/guides/v2.3/cloud/docker/docker-development.html#cron-container)
+### ImportDB Dump
+To import a database dump, place the SQL file into the docker/mysql/docker-entrypoint-initdb.d folder.
+
+### Cron Logs
+```bash
+docker-compose run cli bash -c "cat /var/www/magento/var/log/magento.cron.log"
+```

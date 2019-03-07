@@ -36,7 +36,7 @@ fi
 chown -R www-data:www-data $MAGENTO_ROOT
 
 if [ ! -f "$MAGENTO_ROOT/app/etc/env.php" ]; then
-  echo "Install Magento"
+  echo "Install Magento $VERSION"
 
     INSTALL_COMMAND="$MAGENTO_COMMAND setup:install \
         --db-host=db \

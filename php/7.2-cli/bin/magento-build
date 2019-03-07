@@ -58,9 +58,10 @@ if [ ! -f "$MAGENTO_ROOT/app/etc/env.php" ]; then
 
    if [ "$USE_SAMPLE_DATA" = "true" ]; then
 
-      $MAGENTO_COMMAND sampledata:deploy
-      composer --working-dir=$MAGENTO_ROOT update
+      echo "Install Sample Data"
 
+      $MAGENTO_COMMAND sampledata:deploy
+      composer --working-dir=$MAGENTO_ROOT update  --no-interaction
       INSTALL_COMMAND="$INSTALL_COMMAND --use-sample-data"
     fi
 

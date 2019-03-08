@@ -17,6 +17,9 @@ echo "Building Magento ..."
 
 if [ ! -f "$MAGENTO_ROOT/composer.json" ]; then
     echo "Creating Magento ($M2SETUP_VERSION $VERSION) project from composer"
+    if [ -d "$MAGENTO_ROOT/$M2_SETUP_VERSION" ]; then
+       rm -rf $MAGENTO_ROOT/$M2_SETUP_VERSION
+    fi 
 
     mkdir $MAGENTO_ROOT/$M2_SETUP_VERSION
 

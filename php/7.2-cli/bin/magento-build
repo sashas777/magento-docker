@@ -37,7 +37,7 @@ composer --working-dir=$MAGENTO_ROOT create-project \
     mkdir -p $MAGENTO_ROOT/var/composer_home
     cp $MAGENTO_ROOT/auth.json.sample  $MAGENTO_ROOT/auth.json
     sed -i "s/<public-key>/$COMPOSER_MAGENTO_USERNAME/" $MAGENTO_ROOT/auth.json
-    sed -i "s/<private-key>/$COMPOSER_MAGENTO_USERNAME/" $MAGENTO_ROOT/auth.json
+    sed -i "s/<private-key>/$COMPOSER_MAGENTO_PASSWORD/" $MAGENTO_ROOT/auth.json
     cp $MAGENTO_ROOT/auth.json $MAGENTO_ROOT/var/composer_home/auth.json
 else
     composer --working-dir=$MAGENTO_ROOT install --no-suggest --no-ansi --no-interaction --no-progress --prefer-dist

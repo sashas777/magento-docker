@@ -7,6 +7,7 @@ set -e
 MAGENTO_COMMAND="magento-command"
 
 ulimit -s 65536
+ulimit -c unlimited
 
 # when running any Composer commands through Magento, e.g. sampledata:deploy, so copy the
 # credentials over to it to prevent Composer from asking for them again
@@ -23,16 +24,16 @@ if [ ! -f "$MAGENTO_ROOT/composer.json" ]; then
        rm -rf $MAGENTO_ROOT/$M2_SETUP_VERSION
     fi 
 
-    mkdir $MAGENTO_ROOT/$M2_SETUP_VERSION
+#    mkdir $MAGENTO_ROOT/$M2_SETUP_VERSION
     
-    composer --working-dir=$MAGENTO_ROOT/$M2_SETUP_VERSION create-project \
+    composer --working-dir=$MAGENTO_ROOT create-project \
         --repository-url=https://repo.magento.com/ \
         magento/project-$VERSION-edition=$M2_SETUP_VERSION \
         --no-interaction \
-        $MAGENTO_ROOT/$M2_SETUP_VERSION
+        $MAGENTO_ROOT
 
-    rsync -az $MAGENTO_ROOT/$M2_SETUP_VERSION/ $MAGENTO_ROOT/
-    rm -rf $MAGENTO_ROOT/$M2_SETUP_VERSION
+#    rsync -az $MAGENTO_ROOT/$M2_SETUP_VERSION/ $MAGENTO_ROOT/
+#    rm -rf $MAGENTO_ROOT/$M2_SETUP_VERSION
 
     mkdir -p $MAGENTO_ROOT/var/composer_home
     cp $MAGENTO_ROOT/auth.json.sample  $MAGENTO_ROOT/auth.json

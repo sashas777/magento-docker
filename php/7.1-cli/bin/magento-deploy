@@ -6,7 +6,7 @@ set -e
 
 MAGENTO_COMMAND="magento-command"
 
-echo "Deploying $(MAGENTO_RUN_MODE) Magento ..."
+echo "Deploying $MAGENTO_RUN_MODE Magento ..."
 
 $MAGENTO_COMMAND maintenance:enable
 $MAGENTO_COMMAND setup:upgrade

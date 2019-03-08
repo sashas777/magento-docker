@@ -12,7 +12,7 @@ $MAGENTO_COMMAND maintenance:enable
 $MAGENTO_COMMAND setup:upgrade
 $MAGENTO_COMMAND index:reindex
 
-if [ "$MAGENTO_RUN_MODE" = "production"]; then
+if [ "$MAGENTO_RUN_MODE" = "production" ]; then
    $MAGENTO_COMMAND  setup:di:compile
    $MAGENTO_COMMAND  setup:static-content:deploy -j 2
 fi

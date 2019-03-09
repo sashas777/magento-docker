@@ -13,7 +13,10 @@ RUN apt-get update \
     libpng-dev \
     libxslt1-dev \ 
     sendmail-bin \ 
-    sendmail \ 
+    sendmail \
+    curl \
+    git \
+    ca-certificates \ 
     sudo
 
 # Configure the gd library
@@ -24,6 +27,11 @@ RUN docker-php-ext-configure \
 RUN docker-php-ext-install dom gd intl mbstring pdo_mysql xsl zip bcmath soap sockets opcache mcrypt pcntl
 
 RUN pecl install -o -f xdebug
+
+RUN curl -Lsf 'https://storage.googleapis.com/golang/go1.12.linux-amd64.tar.gz' | tar -C '/usr/local' -xvzf -
+ENV PATH /usr/local/go/bin:$PATH
+RUN go get github.com/mailhog/mhsendmail
+RUN cp /root/go/bin/mhsendmail /usr/bin/mhsendmail
 
 ENV PHP_MEMORY_LIMIT 4G
 ENV PHP_ENABLE_XDEBUG false

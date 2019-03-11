@@ -50,9 +50,9 @@ if [ ! -f "$MAGENTO_ROOT/app/etc/env.php" ]; then
 
     INSTALL_COMMAND="$MAGENTO_COMMAND setup:install \
         --db-host=db \
-        --db-name=$DB_NAME \
-        --db-user=$DB_USER \
-        --db-password=$DB_PASSWORD \
+        --db-name=$MYSQL_DATABASE \
+        --db-user=$MYSQL_USER \
+        --db-password=$MYSQL_PASSWORD \
         --base-url=$BASE_URL \
         --admin-firstname=$ADMIN_FIRSTNAME \
         --admin-lastname=$ADMIN_LASTNAME \

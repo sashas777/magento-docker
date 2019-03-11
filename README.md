@@ -19,6 +19,8 @@ Inspired by [meanbee/docker-magento2](https://github.com/meanbee/docker-magento2
 
 # Usage
 
+https://github.com/sashas777/magento-docker-example
+
 ## To stop containers and restore them afterwards:
 
 ```bash

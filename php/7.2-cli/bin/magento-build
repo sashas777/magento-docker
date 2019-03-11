@@ -40,11 +40,11 @@ composer --working-dir=$MAGENTO_ROOT create-project \
     sed -i "s/<private-key>/$COMPOSER_MAGENTO_PASSWORD/" $MAGENTO_ROOT/auth.json
     cp $MAGENTO_ROOT/auth.json $MAGENTO_ROOT/var/composer_home/auth.json
 else
-    rm -rf $MAGENTO_ROOT/vendor
+    rm -rf $MAGENTO_ROOT/vendor/*
     composer --working-dir=$MAGENTO_ROOT install --no-suggest --no-ansi --no-interaction --no-progress --prefer-dist
 fi
 
-chown -R www-data:www-data $MAGENTO_ROOT/*
+chown -R www-data:www-data $MAGENTO_ROOT
 
 if [ ! -f "$MAGENTO_ROOT/app/etc/env.php" ]; then
   echo "Install Magento $VERSION"

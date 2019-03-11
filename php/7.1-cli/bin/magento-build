@@ -44,7 +44,7 @@ else
     composer --working-dir=$MAGENTO_ROOT install --no-suggest --no-ansi --no-interaction --no-progress --prefer-dist
 fi
 
-chown -R www-data:www-data $MAGENTO_ROOT
+chown -R www-data:www-data $MAGENTO_ROOT/*
 
 if [ ! -f "$MAGENTO_ROOT/app/etc/env.php" ]; then
   echo "Install Magento $VERSION"

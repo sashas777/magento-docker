@@ -76,6 +76,4 @@ RUN ["chmod", "+x", "/usr/local/bin/run-cron"]
 
 WORKDIR ${MAGENTO_ROOT}
 
-USER www-data
-
 CMD ["bash"]

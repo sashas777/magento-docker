@@ -16,6 +16,7 @@ RUN apt-get update \
     sendmail \
     curl \
     git \
+    nano \
     ca-certificates \ 
     sudo
 
@@ -55,3 +56,5 @@ COPY etc/php-fpm.ini /usr/local/etc/php/conf.d/zz-magento.ini
 COPY etc/php-fpm.conf /usr/local/etc/
 
 CMD ["php-fpm", "-R"]
+
+WORKDIR ${MAGENTO_ROOT}

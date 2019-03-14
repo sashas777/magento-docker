@@ -16,6 +16,7 @@ RUN apt-get update \
     sendmail \
     curl \
     git \
+    nano \
     ca-certificates \
     sudo
 
@@ -53,5 +54,7 @@ ENV UPLOAD_MAX_FILESIZE 64M
 
 COPY etc/php-fpm.ini /usr/local/etc/php/conf.d/zz-magento.ini
 COPY etc/php-fpm.conf /usr/local/etc/
+
+WORKDIR ${MAGENTO_ROOT}
 
 CMD ["php-fpm", "-R"]

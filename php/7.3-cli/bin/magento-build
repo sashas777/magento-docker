@@ -1,0 +1,100 @@
+#!/bin/bash
+
+set -e
+
+[ "$DEBUG" = "true" ] && set -x
+
+MAGENTO_COMMAND="magento-command"
+
+ulimit -s 65536
+ulimit -c unlimited
+
+# when running any Composer commands through Magento, e.g. sampledata:deploy, so copy the
+# credentials over to it to prevent Composer from asking for them again
+if [ -f "$MAGENTO_ROOT/auth.json" ]; then
+        mkdir -p $MAGENTO_ROOT/var/composer_home
+        cp $MAGENTO_ROOT/auth.json $MAGENTO_ROOT/var/composer_home/auth.json
+fi
+
+echo "Building Magento ..."
+
+if [ ! -f "$MAGENTO_ROOT/composer.json" ]; then
+    echo "Creating Magento ($M2SETUP_VERSION $VERSION) project from composer"
+    if [ -d "$MAGENTO_ROOT/$M2_SETUP_VERSION" ]; then
+       rm -rf $MAGENTO_ROOT/$M2_SETUP_VERSION
+    fi 
+
+#    mkdir $MAGENTO_ROOT/$M2_SETUP_VERSION
+    
+composer --working-dir=$MAGENTO_ROOT create-project \
+        --repository-url=https://repo.magento.com/ \
+        magento/project-$VERSION-edition=$M2_SETUP_VERSION \
+        --no-interaction $MAGENTO_ROOT
+
+#    rsync -az $MAGENTO_ROOT/$M2_SETUP_VERSION/ $MAGENTO_ROOT/
+#    rm -rf $MAGENTO_ROOT/$M2_SETUP_VERSION
+
+    mkdir -p $MAGENTO_ROOT/var/composer_home
+    cp $MAGENTO_ROOT/auth.json.sample  $MAGENTO_ROOT/auth.json
+    sed -i "s/<public-key>/$COMPOSER_MAGENTO_USERNAME/" $MAGENTO_ROOT/auth.json
+    sed -i "s/<private-key>/$COMPOSER_MAGENTO_PASSWORD/" $MAGENTO_ROOT/auth.json
+    cp $MAGENTO_ROOT/auth.json $MAGENTO_ROOT/var/composer_home/auth.json
+else
+    rm -rf $MAGENTO_ROOT/vendor/*
+    composer --working-dir=$MAGENTO_ROOT install --no-suggest --no-ansi --no-interaction --no-progress --prefer-dist
+fi
+
+chown -R www-data:www-data $MAGENTO_ROOT
+
+if [ ! -f "$MAGENTO_ROOT/app/etc/env.php" ]; then
+  echo "Install Magento $VERSION"
+
+    INSTALL_COMMAND="$MAGENTO_COMMAND setup:install \
+        --db-host=db \
+        --db-name=$MYSQL_DATABASE \
+        --db-user=$MYSQL_USER \
+        --db-password=$MYSQL_PASSWORD \
+        --base-url=$BASE_URL \
+        --admin-firstname=$ADMIN_FIRSTNAME \
+        --admin-lastname=$ADMIN_LASTNAME \
+        --admin-email=$ADMIN_EMAIL \
+        --admin-user=$ADMIN_USER \
+        --admin-password=$ADMIN_PASSWORD \
+        --timezone=$TIMEZONE \
+        --use-rewrites=1 \
+        --base-url-secure=$SECURE_BASE_URL \
+        --currency=$CURRENCY \
+        --language=$LANGUAGE \
+        --backend-frontname=$BACKEND_FRONTNAME "
+
+   if [ "$USE_SAMPLE_DATA" = "true" ]; then
+
+      echo "Install Sample Data"
+
+      $MAGENTO_COMMAND sampledata:deploy
+      composer --working-dir=$MAGENTO_ROOT update  --no-interaction
+      INSTALL_COMMAND="$INSTALL_COMMAND --use-sample-data"
+    fi
+
+     $INSTALL_COMMAND
+fi
+
+if [ -d "$MAGENTO_ROOT/m2-hotfixes" ]; then
+ echo "Install Patches..."
+  for patch in $MAGENTO_ROOT/m2-hotfixes/*.patch
+  do
+    echo "Applying $patch"
+    patch -p1 < $patch
+  done
+fi
+
+chown -R www-data:www-data $MAGENTO_ROOT
+
+echo "Fixing file permissions..."
+
+find $MAGENTO_ROOT/pub -type f -exec chmod 664 {} \;
+find $MAGENTO_ROOT/pub -type d -exec chmod 775 {} \;
+
+chown -R www-data:www-data $MAGENTO_ROOT
+
+echo "Building complete"

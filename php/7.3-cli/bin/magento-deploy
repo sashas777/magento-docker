@@ -1,0 +1,24 @@
+#!/bin/bash
+
+set -e
+
+[ "$DEBUG" = "true" ] && set -x
+
+MAGENTO_COMMAND="magento-command"
+
+echo "Deploying $MAGENTO_RUN_MODE Magento ..."
+
+$MAGENTO_COMMAND maintenance:enable
+$MAGENTO_COMMAND setup:upgrade
+$MAGENTO_COMMAND index:reindex
+
+if [ "$MAGENTO_RUN_MODE" = "production" ]; then
+   $MAGENTO_COMMAND  deploy:mode:set $MAGENTO_RUN_MODE -s 
+   $MAGENTO_COMMAND  setup:di:compile
+   $MAGENTO_COMMAND  setup:static-content:deploy -j 2
+fi
+
+$MAGENTO_COMMAND maintenance:disable
+
+echo "Deployment finished"
+echo "Installation complete"

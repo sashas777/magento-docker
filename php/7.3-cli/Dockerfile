@@ -14,6 +14,7 @@ RUN apt-get update \
     libxslt1-dev \ 
     sendmail-bin \ 
     sendmail \ 
+    libzip-dev \
     sudo \ 
     cron \ 
     rsyslog \ 

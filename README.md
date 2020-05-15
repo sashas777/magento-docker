@@ -61,3 +61,4 @@ docker-compose run cli bash -c "cat /var/www/magento/var/log/magento.cron.log"
 ```
  
 [ico-downloads]: https://img.shields.io/docker/pulls/sashas777/magento-php.svg?style=flat-square
+[link-dockerhub]: https://hub.docker.com/r/sashas777/

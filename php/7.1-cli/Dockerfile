@@ -22,6 +22,7 @@ RUN apt-get update \
     redis-tools \
     nano \
     curl \
+    jq \
     git \
     ca-certificates \
     unzip

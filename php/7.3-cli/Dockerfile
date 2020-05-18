@@ -24,6 +24,7 @@ RUN apt-get update \
     nano \
     curl \
     git \
+    jq \
     ca-certificates \
     unzip
 

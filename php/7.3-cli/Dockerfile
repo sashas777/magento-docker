@@ -42,6 +42,8 @@ ENV PATH /usr/local/go/bin:$PATH
 RUN go get github.com/mailhog/mhsendmail
 RUN cp /root/go/bin/mhsendmail /usr/bin/mhsendmail
 
+RUN curl -sL https://deb.nodesource.com/setup_14.x | sudo -E bash -
+RUN sudo apt-get install nodejs -y
 
 ENV PHP_MEMORY_LIMIT 4G
 ENV PHP_ENABLE_XDEBUG false

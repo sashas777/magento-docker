@@ -35,6 +35,11 @@ RUN docker-php-ext-install dom gd intl mbstring pdo_mysql xsl zip bcmath soap so
 
 RUN pecl install -o -f xdebug
 
+RUN apt-get update && apt-get install -y \
+    libmagickwand-dev --no-install-recommends \
+    && pecl install imagick \
+    && docker-php-ext-enable imagick
+
 RUN curl -Lsf 'https://storage.googleapis.com/golang/go1.12.linux-amd64.tar.gz' | tar -C '/usr/local' -xvzf -
 ENV PATH /usr/local/go/bin:$PATH
 RUN go get github.com/mailhog/mhsendmail

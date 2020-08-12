@@ -19,13 +19,26 @@ RUN apt-get update \
     git \
     nano \
     ca-certificates \
+    libonig-dev \
     sudo
 
 # Configure the gd library
 RUN docker-php-ext-configure gd --with-freetype --with-jpeg
 
 # Install required PHP extensions
-RUN docker-php-ext-install dom gd intl mbstring pdo_mysql xsl zip bcmath soap sockets opcache
+
+RUN docker-php-ext-install \
+  dom \ 
+  gd \ 
+  intl \ 
+  mbstring \ 
+  pdo_mysql \ 
+  xsl \ 
+  zip \ 
+  soap \ 
+  bcmath \ 
+  pcntl \ 
+  sockets
 
 RUN pecl install -o -f xdebug
 

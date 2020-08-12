@@ -29,8 +29,7 @@ RUN apt-get update \
     unzip
 
 # Configure the gd library
-RUN docker-php-ext-configure \
-  gd --with-freetype-dir=/usr/include/ --with-jpeg-dir=/usr/include/
+RUN docker-php-ext-configure gd --with-freetype --with-jpeg
 
 # Install required PHP extensions
 RUN docker-php-ext-install dom gd intl mbstring pdo_mysql xsl zip bcmath soap sockets opcache

@@ -16,8 +16,7 @@ RUN apt-get update \
     sendmail \ 
     libzip-dev \
     sudo \ 
-    cron \ 
-    rsyslog \ 
+    cron \
     mariadb-client \
     git \
     redis-tools \
@@ -61,8 +60,6 @@ RUN cp /root/go/bin/mhsendmail /usr/bin/mhsendmail
 
 RUN curl -sL https://deb.nodesource.com/setup_14.x | sudo -E bash -
 RUN sudo apt-get install nodejs -y
-
-RUN sed -i '/imklog/s/^/#/' /etc/rsyslog.conf
 
 ENV PHP_MEMORY_LIMIT 4G
 ENV PHP_ENABLE_XDEBUG false

@@ -88,6 +88,8 @@ RUN composer global require hirak/prestissimo
 
 ADD bin/* /usr/local/bin/
 
+RUN groupadd -g 1000 www-data && useradd -g 1000 -u 1000 -d ${MAGENTO_ROOT} -s /bin/bash www-data
+
 RUN ["chmod", "+x", "/usr/local/bin/magento-installer"]
 RUN ["chmod", "+x", "/usr/local/bin/magento-command"]
 RUN ["chmod", "+x", "/usr/local/bin/magento-build"]

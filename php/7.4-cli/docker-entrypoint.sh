@@ -21,30 +21,21 @@ if [[ "$UPDATE_UID_GID" = "true" ]]; then
     # up (if necessary) and then make the change to www-data.
 
     [ ! -z "${INCUMBENT_USER}" ] && usermod -u 99$DOCKER_UID $INCUMBENT_USER
-    usermod -u $DOCKER_UID www-data
+    usermod -u $DOCKER_UID www
 
     [ ! -z "${INCUMBENT_GROUP}" ] && groupmod -g 99$DOCKER_GID $INCUMBENT_GROUP
-    groupmod -g $DOCKER_GID www-data
+    groupmod -g $DOCKER_GID www
 fi
 
 # Ensure our Magento directory exists
 mkdir -p $MAGENTO_ROOT
-chown www-data:www-data $MAGENTO_ROOT
+chown www:www-data $MAGENTO_ROOT
 
 CRON_LOG=/var/log/cron.log
+touch $CRON_LOG
 
 # Setup Magento cron
 echo "* * * * * root /usr/local/bin/php ${MAGENTO_ROOT}/bin/magento cron:run | grep -v \"Ran jobs by schedule\" >> ${MAGENTO_ROOT}/var/log/magento.cron.log" > /etc/cron.d/magento
-
-## Get rsyslog running for cron output
-#touch $CRON_LOG
-#echo "cron.* $CRON_LOG" > /etc/rsyslog.d/cron.conf
-#service rsyslog start
-
-# Configure Sendmail if required
-if [ "$ENABLE_SENDMAIL" == "true" ]; then
-    /etc/init.d/sendmail start
-fi
 
 # Substitute in php.ini values
 [ ! -z "${PHP_MEMORY_LIMIT}" ] && sed -i "s/!PHP_MEMORY_LIMIT!/${PHP_MEMORY_LIMIT}/" /usr/local/etc/php/conf.d/zz-magento.ini

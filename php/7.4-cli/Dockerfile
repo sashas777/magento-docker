@@ -42,7 +42,7 @@ RUN docker-php-ext-install dom gd intl mbstring pdo_mysql xsl zip soap bcmath pc
 RUN pecl install -o -f xdebug imagick
 
 RUN docker-php-ext-enable imagick
- 
+
 RUN go get github.com/mailhog/mhsendmail
 RUN cp /root/go/bin/mhsendmail /usr/bin/mhsendmail
 

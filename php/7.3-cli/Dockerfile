@@ -3,8 +3,10 @@ FROM php:7.3-cli
 ENV TZ=America/New_York
 RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 
-RUN apt-get update && apt-get install -y sudo
+RUN apt-get update && apt-get install -y sudo software-properties-common
 RUN curl -sL https://deb.nodesource.com/setup_15.x | sudo -E bash -
+RUN sudo add-apt-repository ppa:longsleep/golang-backports -y
+RUN sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys F6BC817356A3D45E
 
 # Install dependencies
 RUN apt-get update \
@@ -27,6 +29,7 @@ RUN apt-get update \
     jq \
     ca-certificates \
     libmagickwand-dev \
+    golang-go \
     nodejs \
     unzip
 
@@ -40,9 +43,7 @@ RUN docker-php-ext-install dom gd intl mbstring pdo_mysql xsl zip bcmath soap so
 RUN pecl install -o -f xdebug imagick
 
 RUN docker-php-ext-enable imagick
-	
-RUN curl -Lsf 'https://storage.googleapis.com/golang/go1.12.linux-amd64.tar.gz' | tar -C '/usr/local' -xvzf -
-ENV PATH /usr/local/go/bin:$PATH
+
 RUN go get github.com/mailhog/mhsendmail
 RUN cp /root/go/bin/mhsendmail /usr/bin/mhsendmail
 

@@ -5,8 +5,8 @@ RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 
 RUN apt-get update && apt-get install -y sudo
 RUN curl -sL https://deb.nodesource.com/setup_15.x | sudo -E bash -
-RUN add-apt-repository ppa:longsleep/golang-backports -y
-RUN apt-key adv --keyserver keyserver.ubuntu.com --recv-keys F6BC817356A3D45E
+RUN sudo add-apt-repository ppa:longsleep/golang-backports -y
+RUN sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys F6BC817356A3D45E
 
 # Install dependencies
 RUN apt-get update \

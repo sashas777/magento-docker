@@ -3,7 +3,7 @@ FROM php:7.4-cli
 ENV TZ=America/New_York
 RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 
-RUN apt-get update && apt-get install -y sudo
+RUN apt-get update && apt-get install -y sudo software-properties-common
 RUN curl -sL https://deb.nodesource.com/setup_15.x | sudo -E bash -
 RUN sudo add-apt-repository ppa:longsleep/golang-backports -y
 RUN sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys F6BC817356A3D45E
@@ -29,7 +29,6 @@ RUN apt-get update \
     ca-certificates \
     libonig-dev \
     libmagickwand-dev \
-    software-properties-common \
     golang-go \
     nodejs \
     unzip

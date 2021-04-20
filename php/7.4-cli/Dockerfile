@@ -31,7 +31,7 @@ RUN apt-get update \
     libmagickwand-dev \
     golang-go \
     nodejs \
-    unzip
+    unzip --no-install-recommends
 
 # Configure the gd library
 RUN docker-php-ext-configure gd --with-freetype --with-jpeg

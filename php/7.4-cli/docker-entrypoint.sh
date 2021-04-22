@@ -24,25 +24,25 @@ if [[ "$UPDATE_UID_GID" = "true" ]]; then
     sudo usermod -u $DOCKER_UID www
 
     [ ! -z "${INCUMBENT_GROUP}" ] && sudo groupmod -g 99$DOCKER_GID $INCUMBENT_GROUP
-    sudo groupmod -g $DOCKER_GID www
+    sudo groupmod -g $DOCKER_GID www-data
 fi
 
 # Ensure our Magento directory exists
 mkdir -p $MAGENTO_ROOT
 sudo chown www:www-data $MAGENTO_ROOT
 
+find var generated pub/static pub/media app/etc -type f -exec chmod g+w {} + &&
+find var generated pub/static pub/media app/etc -type d -exec chmod g+ws {} +
+
 CRON_LOG=/var/log/cron.log
 sudo touch $CRON_LOG
-
-# Setup Magento cron
-echo "* * * * * root /usr/local/bin/php ${MAGENTO_ROOT}/bin/magento cron:run | grep -v \"Ran jobs by schedule\" >> ${MAGENTO_ROOT}/var/log/magento.cron.log" > /etc/cron.d/magento
 
 # Substitute in php.ini values
 [ ! -z "${PHP_MEMORY_LIMIT}" ] && sudo sed -i "s/!PHP_MEMORY_LIMIT!/${PHP_MEMORY_LIMIT}/" /usr/local/etc/php/conf.d/zz-magento.ini
 [ ! -z "${UPLOAD_MAX_FILESIZE}" ] && sudo sed -i "s/!UPLOAD_MAX_FILESIZE!/${UPLOAD_MAX_FILESIZE}/" /usr/local/etc/php/conf.d/zz-magento.ini
 
 [ "$PHP_ENABLE_XDEBUG" = "true" ] && \
-    sudo docker-php-ext-enable xdebug && \
+    sudo -E docker-php-ext-enable xdebug && \
     echo "Xdebug is enabled"
 
 # Configure composer

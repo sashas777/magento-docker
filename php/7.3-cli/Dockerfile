@@ -69,10 +69,6 @@ RUN echo '%www ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers && usermod -a -G www-data
 
 ADD bin/* /usr/local/bin/
 
-RUN ["chmod", "+x", "/usr/local/bin/magento-installer"]
-RUN ["chmod", "+x", "/usr/local/bin/magento-command"]
-RUN ["chmod", "+x", "/usr/local/bin/magento-build"]
-RUN ["chmod", "+x", "/usr/local/bin/magento-deploy"]
 RUN ["chmod", "+x", "/usr/local/bin/run-cron"]
 RUN ["chmod", "+x", "/docker-entrypoint.sh"]
 

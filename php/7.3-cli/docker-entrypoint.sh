@@ -29,10 +29,10 @@ fi
 
 # Ensure our Magento directory exists
 mkdir -p $MAGENTO_ROOT
-sudo chown www:www-data $MAGENTO_ROOT
+sudo chown -R www:www-data $MAGENTO_ROOT
 
-find var generated pub/static pub/media app/etc -type f -exec chmod g+w {} + &&
-find var generated pub/static pub/media app/etc -type d -exec chmod g+ws {} +
+find var generated pub/static pub/media app/etc -type f -exec sudo chmod g+w {} + &&
+find var generated pub/static pub/media app/etc -type d -exec sudo chmod g+ws {} +
 
 CRON_LOG=/var/log/cron.log
 sudo touch $CRON_LOG

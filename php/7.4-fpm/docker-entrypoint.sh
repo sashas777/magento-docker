@@ -20,27 +20,27 @@ if [[ "$UPDATE_UID_GID" = "true" ]]; then
     # Once we've established the ids and incumbent ids then we need to free them
     # up (if necessary) and then make the change to www-data.
 
-    [ ! -z "${INCUMBENT_USER}" ] && usermod -u 99$DOCKER_UID $INCUMBENT_USER
-    usermod -u $DOCKER_UID www-data
+    [ ! -z "${INCUMBENT_USER}" ] && sudo usermod -u 99$DOCKER_UID $INCUMBENT_USER
+    sudo usermod -u $DOCKER_UID www-data
 
-    [ ! -z "${INCUMBENT_GROUP}" ] && groupmod -g 99$DOCKER_GID $INCUMBENT_GROUP
-    groupmod -g $DOCKER_GID www-data
+    [ ! -z "${INCUMBENT_GROUP}" ] && sudo groupmod -g 99$DOCKER_GID $INCUMBENT_GROUP
+    sudo groupmod -g $DOCKER_GID www
 fi
 
 # Ensure our Magento directory exists
 mkdir -p $MAGENTO_ROOT
-chown www-data:www-data $MAGENTO_ROOT
+chown -R www:www-data $MAGENTO_ROOT
 
 # Substitute in php.ini values
-[ ! -z "${PHP_MEMORY_LIMIT}" ] && sed -i "s/!PHP_MEMORY_LIMIT!/${PHP_MEMORY_LIMIT}/" /usr/local/etc/php/conf.d/zz-magento.ini
-[ ! -z "${UPLOAD_MAX_FILESIZE}" ] && sed -i "s/!UPLOAD_MAX_FILESIZE!/${UPLOAD_MAX_FILESIZE}/" /usr/local/etc/php/conf.d/zz-magento.ini
+[ ! -z "${PHP_MEMORY_LIMIT}" ] && sudo sed -i "s/!PHP_MEMORY_LIMIT!/${PHP_MEMORY_LIMIT}/" /usr/local/etc/php/conf.d/zz-magento.ini
+[ ! -z "${UPLOAD_MAX_FILESIZE}" ] && sudo sed -i "s/!UPLOAD_MAX_FILESIZE!/${UPLOAD_MAX_FILESIZE}/" /usr/local/etc/php/conf.d/zz-magento.ini
 
 [ "$PHP_ENABLE_XDEBUG" = "true" ] && \
-    docker-php-ext-enable xdebug && \
+    sudo -E docker-php-ext-enable xdebug && \
     echo "Xdebug is enabled"
 
 # Configure PHP-FPM
-[ ! -z "${MAGENTO_RUN_MODE}" ] && sed -i "s/!MAGENTO_RUN_MODE!/${MAGENTO_RUN_MODE}/" /usr/local/etc/php-fpm.conf
+[ ! -z "${MAGENTO_RUN_MODE}" ] && sudo sed -i "s/!MAGENTO_RUN_MODE!/${MAGENTO_RUN_MODE}/" /usr/local/etc/php-fpm.conf
 
 exec "$@"
 

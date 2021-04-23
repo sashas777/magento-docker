@@ -42,7 +42,7 @@ RUN cp /root/go/bin/mhsendmail /usr/bin/mhsendmail
 ENV PHP_MEMORY_LIMIT 4G
 ENV PHP_ENABLE_XDEBUG false
 ENV MAGENTO_ROOT /var/www/magento
-
+ENV PHP_IDE_CONFIG serverName=magento
 ENV DEBUG false
 
 COPY etc/php-xdebug.ini /usr/local/etc/php/conf.d/zz-xdebug-settings.ini

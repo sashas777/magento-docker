@@ -52,6 +52,7 @@ ENV PHP_ENABLE_XDEBUG false
 ENV MAGENTO_ROOT /var/www/magento
 ENV DEBUG false
 ENV COMPOSER_ALLOW_SUPERUSER 1
+ENV PHP_IDE_CONFIG serverName=magento
 
 ADD etc/php-xdebug.ini /usr/local/etc/php/conf.d/zz-xdebug-settings.ini
 ADD etc/mail.ini /usr/local/etc/php/conf.d/zz-mail.ini

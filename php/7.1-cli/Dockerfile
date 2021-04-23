@@ -53,6 +53,7 @@ ENV PHP_MEMORY_LIMIT 4G
 ENV PHP_ENABLE_XDEBUG false
 ENV MAGENTO_ROOT /var/www/magento
 ENV DEBUG false
+ENV PHP_IDE_CONFIG serverName=magento
 
 ADD etc/php-xdebug.ini /usr/local/etc/php/conf.d/zz-xdebug-settings.ini
 ADD etc/mail.ini /usr/local/etc/php/conf.d/zz-mail.ini

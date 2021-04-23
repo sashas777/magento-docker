@@ -47,6 +47,7 @@ ENV MAGENTO_ROOT /var/www/magento
 ENV DEBUG false
 ENV MAGENTO_RUN_MODE developer
 ENV UPLOAD_MAX_FILESIZE 64M
+ENV PHP_IDE_CONFIG serverName=magento
 
 COPY etc/php-xdebug.ini /usr/local/etc/php/conf.d/zz-xdebug-settings.ini
 COPY etc/mail.ini /usr/local/etc/php/conf.d/zz-mail.ini

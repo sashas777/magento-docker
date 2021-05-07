@@ -29,6 +29,7 @@ RUN apt-get update \
     libmagickwand-dev \
     golang-go \
     nodejs \
+    ssh \
     unzip --no-install-recommends
 
 # Configure the gd library

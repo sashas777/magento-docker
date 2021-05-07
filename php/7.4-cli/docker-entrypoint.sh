@@ -30,6 +30,7 @@ fi
 # Ensure our Magento directory exists
 mkdir -p $MAGENTO_ROOT
 sudo chown -R www:www-data $MAGENTO_ROOT
+sudo chown -R www:www-data /var/www/composer
 umask 002
 sudo chgrp www-data $MAGENTO_ROOT
 sudo chmod g+s $MAGENTO_ROOT

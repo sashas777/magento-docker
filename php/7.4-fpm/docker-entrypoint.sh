@@ -30,6 +30,10 @@ fi
 # Ensure our Magento directory exists
 mkdir -p $MAGENTO_ROOT
 chown -R www:www-data $MAGENTO_ROOT
+umask 002
+sudo chgrp www-data $MAGENTO_ROOT
+sudo chmod g+s $MAGENTO_ROOT
+sudo chown -R www:www-data /var/www/composer
 
 # Substitute in php.ini values
 [ ! -z "${PHP_MEMORY_LIMIT}" ] && sudo sed -i "s/!PHP_MEMORY_LIMIT!/${PHP_MEMORY_LIMIT}/" /usr/local/etc/php/conf.d/zz-magento.ini

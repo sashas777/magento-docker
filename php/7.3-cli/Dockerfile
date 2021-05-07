@@ -29,6 +29,7 @@ RUN apt-get update \
     libmagickwand-dev \
     golang-go \
     nodejs \
+    ssh \
     unzip
 
 # Configure the gd library
@@ -46,6 +47,7 @@ RUN curl -Lsf 'https://storage.googleapis.com/golang/go1.16.linux-amd64.tar.gz' 
 ENV PATH /usr/local/go/bin:$PATH
 RUN go get github.com/mailhog/mhsendmail
 RUN cp /root/go/bin/mhsendmail /usr/bin/mhsendmail
+RUN mkdir /var/www/composer && chmod 777 -R  /var/www/composer
 
 ENV PATH /usr/local/go/bin:$PATH
 ENV PHP_MEMORY_LIMIT 4G
@@ -54,6 +56,7 @@ ENV MAGENTO_ROOT /var/www/magento
 ENV DEBUG false
 ENV COMPOSER_ALLOW_SUPERUSER 1
 ENV PHP_IDE_CONFIG serverName=magento
+ENV COMPOSER_HOME /var/www/composer
 
 ADD etc/php-xdebug.ini /usr/local/etc/php/conf.d/zz-xdebug-settings.ini
 ADD etc/mail.ini /usr/local/etc/php/conf.d/zz-mail.ini

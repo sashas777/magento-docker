@@ -33,6 +33,7 @@ sudo chown -R www:www-data $MAGENTO_ROOT
 umask 002
 sudo chgrp www-data $MAGENTO_ROOT
 sudo chmod g+s $MAGENTO_ROOT
+sudo chown -R www:www-data /var/www/composer
 
 CRON_LOG=/var/log/cron.log
 sudo touch $CRON_LOG

@@ -48,12 +48,14 @@ RUN cp /root/go/bin/mhsendmail /usr/bin/mhsendmail
 
 RUN curl -sL https://deb.nodesource.com/setup_14.x | sudo -E bash -
 RUN sudo apt-get install nodejs -y
+RUN mkdir /var/www/composer && chmod 777 -R  /var/www/composer
 
 ENV PHP_MEMORY_LIMIT 4G
 ENV PHP_ENABLE_XDEBUG false
 ENV MAGENTO_ROOT /var/www/magento
 ENV DEBUG false
 ENV PHP_IDE_CONFIG serverName=magento
+ENV COMPOSER_HOME /var/www/composer
 
 ADD etc/php-xdebug.ini /usr/local/etc/php/conf.d/zz-xdebug-settings.ini
 ADD etc/mail.ini /usr/local/etc/php/conf.d/zz-mail.ini

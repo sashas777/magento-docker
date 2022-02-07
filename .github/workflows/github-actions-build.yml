@@ -15,7 +15,7 @@ jobs:
       - name: Build image php nginx
         run:  cd nginx/1.9/; docker build . --file Dockerfile --tag ${{ secrets.DOCKER_USERNAME }}/magento-nginx
       - name: Push image
-        run:  docker push ${{ secrets.DOCKER_USERNAME }}//magento-nginx
+        run:  docker push ${{ secrets.DOCKER_USERNAME }}/magento-nginx
   push_to_registry:
     name: Push Docker images to Docker Hub
     runs-on: ubuntu-latest

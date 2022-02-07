@@ -4,6 +4,22 @@ on:
     branches:
       - master
 jobs:
+  push_nginx_arm_registry:
+    name: Nginx to Docker Hub
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out the repo
+        uses: actions/checkout@v2
+      - name: Log into registry
+        run: echo "${{ secrets.DOCKER_PASSWORD }}" | docker login --username ${{ secrets.DOCKER_USERNAME }} --password-stdin
+      - name: Build image nginx arm64v8
+        run:  cd nginx/arm64v8/; docker build . --file Dockerfile --tag ${{ secrets.DOCKER_USERNAME }}//magento-nginx:arm64v8
+      - name: Push image arm64v8
+        run:  docker push ${{ secrets.DOCKER_USERNAME }}//magento-nginx:arm64v8
+      - name: Build image php nginx
+        run:  cd nginx/1.9/; docker build . --file Dockerfile --tag ${{ secrets.DOCKER_USERNAME }}/magento-nginx:latest
+      - name: Push image
+        run:  docker push ${{ secrets.DOCKER_USERNAME }}//magento-nginx:latest
   push_to_registry:
     name: Push Docker images to Docker Hub
     runs-on: ubuntu-latest

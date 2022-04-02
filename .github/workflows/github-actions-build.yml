@@ -16,6 +16,30 @@ jobs:
         run:  cd nginx/1.9/; docker build . --file Dockerfile --tag ${{ secrets.DOCKER_USERNAME }}/magento-nginx
       - name: Push image
         run:  docker push ${{ secrets.DOCKER_USERNAME }}/magento-nginx
+  push_es_registry:
+    name: Elasticsearch to Docker Hub
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out the repo
+        uses: actions/checkout@v2
+      - name: Log into registry
+        run: echo "${{ secrets.DOCKER_PASSWORD }}" | docker login --username ${{ secrets.DOCKER_USERNAME }} --password-stdin
+      - name: Build image elasticsearch 7.16
+        run:  cd elasticsearch/7.16/; docker build . --file Dockerfile --tag ${{ secrets.DOCKER_USERNAME }}/magento-elasticsearch:7.16
+      - name: Push image
+        run:  docker push ${{ secrets.DOCKER_USERNAME }}/magento-elasticsearch:7.16
+  push_redis_registry:
+    name: Redis to Docker Hub
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out the repo
+        uses: actions/checkout@v2
+      - name: Log into registry
+        run: echo "${{ secrets.DOCKER_PASSWORD }}" | docker login --username ${{ secrets.DOCKER_USERNAME }} --password-stdin
+      - name: Build image redis 6.2
+        run:  cd redis/6.2/; docker build . --file Dockerfile --tag ${{ secrets.DOCKER_USERNAME }}/magento-redis:6.2
+      - name: Push image
+        run:  docker push ${{ secrets.DOCKER_USERNAME }}/magento-redis:6.2
   push_to_registry:
     name: Push Docker images to Docker Hub
     runs-on: ubuntu-latest
@@ -24,6 +48,14 @@ jobs:
         uses: actions/checkout@v2
       - name: Log into registry
         run: echo "${{ secrets.DOCKER_PASSWORD }}" | docker login --username ${{ secrets.DOCKER_USERNAME }} --password-stdin
+      - name: Build image php 8.1-cli
+        run:  cd php/8.1-cli/; docker build . --file Dockerfile --tag ${{ secrets.DOCKER_USERNAME }}/magento-php:8.1-cli
+      - name: Push image
+        run:  docker push ${{ secrets.DOCKER_USERNAME }}/magento-php:7.4-cli
+      - name: Build image php 8.1-fpm
+        run:  cd php/8.1-fpm/; docker build . --file Dockerfile --tag ${{ secrets.DOCKER_USERNAME }}/magento-php:8.1-fpm
+      - name: Push image
+        run:  docker push ${{ secrets.DOCKER_USERNAME }}/magento-php:7.4-fpm
       - name: Build image php 7.4-cli
         run:  cd php/7.4-cli/; docker build . --file Dockerfile --tag ${{ secrets.DOCKER_USERNAME }}/magento-php:7.4-cli
       - name: Push image

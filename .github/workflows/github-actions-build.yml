@@ -67,11 +67,11 @@ jobs:
       - name: Build image php 8.1-cli
         run:  cd php/8.1-cli/; docker build . --file Dockerfile --tag ${{ secrets.DOCKER_USERNAME }}/magento-php:8.1-cli
       - name: Push image
-        run:  docker push ${{ secrets.DOCKER_USERNAME }}/magento-php:7.4-cli
+        run:  docker push ${{ secrets.DOCKER_USERNAME }}/magento-php:8.1-cli
       - name: Build image php 8.1-fpm
         run:  cd php/8.1-fpm/; docker build . --file Dockerfile --tag ${{ secrets.DOCKER_USERNAME }}/magento-php:8.1-fpm
       - name: Push image
-        run:  docker push ${{ secrets.DOCKER_USERNAME }}/magento-php:7.4-fpm
+        run:  docker push ${{ secrets.DOCKER_USERNAME }}/magento-php:8.1-fpm
       - name: Build image php 7.4-cli
         run:  cd php/7.4-cli/; docker build . --file Dockerfile --tag ${{ secrets.DOCKER_USERNAME }}/magento-php:7.4-cli
       - name: Push image

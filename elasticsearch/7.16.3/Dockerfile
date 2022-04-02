@@ -1,4 +1,4 @@
-FROM docker.elastic.co/elasticsearch/elasticsearch:7.16
+FROM docker.elastic.co/elasticsearch/elasticsearch:7.16.3
 
 RUN echo "xpack.security.enabled: false" >> /usr/share/elasticsearch/config/elasticsearch.yml
 RUN /usr/share/elasticsearch/bin/elasticsearch-plugin install -b analysis-phonetic

@@ -40,6 +40,22 @@ jobs:
         run:  cd redis/6.2/; docker build . --file Dockerfile --tag ${{ secrets.DOCKER_USERNAME }}/magento-redis:6.2
       - name: Push image
         run:  docker push ${{ secrets.DOCKER_USERNAME }}/magento-redis:6.2
+  push_varnish_registry:
+    name: Varnish to Docker Hub
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out the repo
+        uses: actions/checkout@v2
+      - name: Log into registry
+        run: echo "${{ secrets.DOCKER_PASSWORD }}" | docker login --username ${{ secrets.DOCKER_USERNAME }} --password-stdin
+      - name: Build image varnish 6.5
+        run:  cd varnish/6.5/; docker build . --file Dockerfile --tag ${{ secrets.DOCKER_USERNAME }}/magento-varnish:6.5
+      - name: Push image
+        run:  docker push ${{ secrets.DOCKER_USERNAME }}/magento-varnish:6.5
+      - name: Build image varnish 7.0
+        run:  cd varnish/7.0/; docker build . --file Dockerfile --tag ${{ secrets.DOCKER_USERNAME }}/magento-varnish:7.0
+      - name: Push image
+        run:  docker push ${{ secrets.DOCKER_USERNAME }}/magento-varnish:7.0
   push_to_registry:
     name: PHP to Docker Hub
     runs-on: ubuntu-latest

@@ -4,7 +4,7 @@ ENV TZ=America/New_York
 RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 
 RUN apt-get update && apt-get install -y sudo software-properties-common gpg
-RUN curl -sL https://deb.nodesource.com/setup_15.x | sudo -E bash -
+RUN curl -sL https://deb.nodesource.com/setup_16.x | sudo -E bash -
 
 # Install dependencies
 RUN apt-get update \

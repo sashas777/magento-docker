@@ -8,7 +8,7 @@ Magento 2 docker container images for local environment and tests.
 
 - [Local Environment](https://github.com/sashas777/magento-docker-pipelines/wiki/Docker-Local-Environment-For-A-New-Project)
 - [Bitbucket Pipeline](https://github.com/sashas777/magento-docker-pipelines/wiki/Bitbucket-Pipeline)
-- itLab CI/CD Pipeline](https://github.com/sashas777/magento-docker-pipelines/wiki/GitLab-CI-CD-Pipeline)
+- [GitLab CI/CD Pipeline](https://github.com/sashas777/magento-docker-pipelines/wiki/GitLab-CI-CD-Pipeline)
 
 # Related Resources
 

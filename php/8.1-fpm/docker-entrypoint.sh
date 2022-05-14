@@ -21,7 +21,7 @@ if [[ "$UPDATE_UID_GID" = "true" ]]; then
     # up (if necessary) and then make the change to www-data.
 
     [ ! -z "${INCUMBENT_USER}" ] && sudo usermod -u 99$DOCKER_UID $INCUMBENT_USER
-    sudo usermod -u $DOCKER_UID www-data
+    sudo usermod -u $DOCKER_UID www
 
     [ ! -z "${INCUMBENT_GROUP}" ] && sudo groupmod -g 99$DOCKER_GID $INCUMBENT_GROUP
     sudo groupmod -g $DOCKER_GID www
@@ -29,11 +29,11 @@ fi
 
 # Ensure our Magento directory exists
 mkdir -p $MAGENTO_ROOT
-chown -R www:www-data $MAGENTO_ROOT
+chown -R www:www $MAGENTO_ROOT
 umask 002
-sudo chgrp www-data $MAGENTO_ROOT
+sudo chgrp www $MAGENTO_ROOT
 sudo chmod g+s $MAGENTO_ROOT
-sudo chown -R www:www-data /var/www/composer
+sudo chown -R www:www /var/www/composer
 
 # Substitute in php.ini values
 [ ! -z "${PHP_MEMORY_LIMIT}" ] && sudo sed -i "s/!PHP_MEMORY_LIMIT!/${PHP_MEMORY_LIMIT}/" /usr/local/etc/php/conf.d/zz-magento.ini

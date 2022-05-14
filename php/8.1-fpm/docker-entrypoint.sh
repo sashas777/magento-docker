@@ -2,11 +2,11 @@
 
 [ "$DEBUG" = "true" ] && set -x
 
-# If asked, we'll ensure that the www-data is set to the same uid/gid as the
+# If asked, we'll ensure that the www is set to the same uid/gid as the
 # mounted volume.  This works around permission issues with virtualbox shared
 # folders.
 if [[ "$UPDATE_UID_GID" = "true" ]]; then
-    echo "Updating www-data uid and gid"
+    echo "Updating www uid and gid"
 
     DOCKER_UID=`stat -c "%u" $MAGENTO_ROOT`
     DOCKER_GID=`stat -c "%g" $MAGENTO_ROOT`
@@ -18,7 +18,7 @@ if [[ "$UPDATE_UID_GID" = "true" ]]; then
     echo "Incumbent: user = $INCUMBENT_USER, group = $INCUMBENT_GROUP"
 
     # Once we've established the ids and incumbent ids then we need to free them
-    # up (if necessary) and then make the change to www-data.
+    # up (if necessary) and then make the change to www.
 
     [ ! -z "${INCUMBENT_USER}" ] && sudo usermod -u 99$DOCKER_UID $INCUMBENT_USER
     sudo usermod -u $DOCKER_UID www

@@ -16,10 +16,11 @@ jobs:
         run:  cd nginx/1.9/; docker build . --file Dockerfile --tag ${{ secrets.DOCKER_USERNAME }}/magento-nginx:latest
       - name: Push image
         run:  docker push ${{ secrets.DOCKER_USERNAME }}/magento-nginx:latest
-      - name: Build image nginx 1.21
-        run:  cd nginx/1.21/; docker build . --file Dockerfile --tag ${{ secrets.DOCKER_USERNAME }}/magento-nginx:1.21
-      - name: Push image
-        run:  docker push ${{ secrets.DOCKER_USERNAME }}/magento-nginx:1.21
+      - name: Build & Push image nginx 1.21
+        run:  cd nginx/1.21/; docker buildx build --push --file Dockerfile --tag ${{ secrets.DOCKER_USERNAME }}/magento-nginx:1.21 --platform linux/amd64,linux/arm/v7,linux/arm64 .
+#        run:  cd nginx/1.21/; docker build . --file Dockerfile --tag ${{ secrets.DOCKER_USERNAME }}/magento-nginx:1.21
+#      - name: Push image
+#        run:  docker push ${{ secrets.DOCKER_USERNAME }}/magento-nginx:1.21
   push_es_registry:
     name: Elasticsearch to Docker Hub
     runs-on: ubuntu-latest

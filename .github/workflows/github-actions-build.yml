@@ -12,20 +12,17 @@ jobs:
         uses: actions/checkout@v2
       - name: Log into registry
         run: echo "${{ secrets.DOCKER_PASSWORD }}" | docker login --username ${{ secrets.DOCKER_USERNAME }} --password-stdin
-      - name: Build image nginx latest
-        run:  cd nginx/latest/; docker buildx create --use; docker buildx build --push --file Dockerfile --tag ${{ secrets.DOCKER_USERNAME }}/magento-nginx:latest --platform linux/amd64,linux/arm/v7,linux/arm64 .
       - name: Build image nginx 1.9
-        run:  cd nginx/1.9/; docker buildx create --use; docker buildx build --push --file Dockerfile --tag ${{ secrets.DOCKER_USERNAME }}/magento-nginx:1.9 --platform linux/amd64,linux/arm/v7,linux/arm64 .
-#        run:  cd nginx/1.9/; docker build . --file Dockerfile --tag ${{ secrets.DOCKER_USERNAME }}/magento-nginx:latest
-#      - name: Push image
-#        run:  docker push ${{ secrets.DOCKER_USERNAME }}/magento-nginx:latest
+        run:  cd nginx/1.9/; docker build . --file Dockerfile --tag ${{ secrets.DOCKER_USERNAME }}/magento-nginx:latest
+      - name: Push image
+        run:  docker push ${{ secrets.DOCKER_USERNAME }}/magento-nginx:latest
       - name: Build image nginx 1.21
         run:  cd nginx/1.21/; docker build . --file Dockerfile --tag ${{ secrets.DOCKER_USERNAME }}/magento-nginx:1.21
       - name: Push image
         run:  docker push ${{ secrets.DOCKER_USERNAME }}/magento-nginx:1.21
   push_es_registry:
     name: Elasticsearch to Docker Hub
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     steps:
       - name: Check out the repo
         uses: actions/checkout@v2
@@ -37,7 +34,7 @@ jobs:
         run:  docker push ${{ secrets.DOCKER_USERNAME }}/magento-elasticsearch:7.16.3
   push_redis_registry:
     name: Redis to Docker Hub
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     steps:
       - name: Check out the repo
         uses: actions/checkout@v2
@@ -49,7 +46,7 @@ jobs:
         run:  docker push ${{ secrets.DOCKER_USERNAME }}/magento-redis:6.2
   push_varnish_registry:
     name: Varnish to Docker Hub
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     steps:
       - name: Check out the repo
         uses: actions/checkout@v2
@@ -65,7 +62,7 @@ jobs:
         run:  docker push ${{ secrets.DOCKER_USERNAME }}/magento-varnish:7.0
   push_to_registry:
     name: PHP to Docker Hub
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     steps:
       - name: Check out the repo
         uses: actions/checkout@v2

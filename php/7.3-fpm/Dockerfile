@@ -35,8 +35,10 @@ RUN apt-get update && apt-get install -y \
     && pecl install imagick \
     && docker-php-ext-enable imagick
 
-RUN curl -Lsf 'https://storage.googleapis.com/golang/go1.12.linux-amd64.tar.gz' | tar -C '/usr/local' -xvzf -
+RUN arch=$(arch | sed s/aarch64/arm64/ | sed s/x86_64/amd64/) && \
+    curl -Lsf "https://storage.googleapis.com/golang/go1.17.4.linux-${arch}.tar.gz" | tar -C '/usr/local' -xvzf -
 ENV PATH /usr/local/go/bin:$PATH
+
 RUN go get github.com/mailhog/mhsendmail
 RUN cp /root/go/bin/mhsendmail /usr/bin/mhsendmail
 RUN mkdir /var/www/composer && chmod 777 -R  /var/www/composer

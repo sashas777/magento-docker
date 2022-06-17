@@ -34,19 +34,22 @@ RUN docker-php-ext-configure \
 # Install required PHP extensions
 RUN docker-php-ext-install dom gd intl mbstring pdo_mysql xsl zip bcmath soap sockets opcache mcrypt pcntl
 
-RUN pecl install -o -f xdebug
+#not supported. Need a PHP version >= 7.2.0 and < 8.2.0 (found 7.1.33)
+#RUN pecl install -o -f xdebug
 
 RUN apt-get update && apt-get install -y \
     libmagickwand-dev --no-install-recommends \
     && pecl install imagick \
     && docker-php-ext-enable imagick
 
-RUN curl -Lsf 'https://storage.googleapis.com/golang/go1.12.linux-amd64.tar.gz' | tar -C '/usr/local' -xvzf -
+RUN arch=$(arch | sed s/aarch64/arm64/ | sed s/x86_64/amd64/) && \
+    curl -Lsf "https://storage.googleapis.com/golang/go1.17.4.linux-${arch}.tar.gz" | tar -C '/usr/local' -xvzf -
 ENV PATH /usr/local/go/bin:$PATH
+
 RUN go get github.com/mailhog/mhsendmail
 RUN cp /root/go/bin/mhsendmail /usr/bin/mhsendmail
 
-RUN curl -sL https://deb.nodesource.com/setup_14.x | sudo -E bash -
+RUN curl -sL https://deb.nodesource.com/setup_16.x | sudo -E bash -
 RUN sudo apt-get install nodejs -y
 RUN mkdir /var/www/composer && chmod 777 -R  /var/www/composer
 
@@ -73,7 +76,7 @@ VOLUME /root/.composer/cache
 ADD etc/php-cli.ini /usr/local/etc/php/conf.d/zz-magento.ini
 
 # Get composer installed to /usr/local/bin/composer
-RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer  --1
+RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer  --2
 
 ADD bin/* /usr/local/bin/
 

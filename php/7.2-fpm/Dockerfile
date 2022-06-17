@@ -34,8 +34,10 @@ RUN apt-get update && apt-get install -y \
     && pecl install imagick \
     && docker-php-ext-enable imagick
 
-RUN curl -Lsf 'https://storage.googleapis.com/golang/go1.12.linux-amd64.tar.gz' | tar -C '/usr/local' -xvzf -
+RUN arch=$(arch | sed s/aarch64/arm64/ | sed s/x86_64/amd64/) && \
+    curl -Lsf "https://storage.googleapis.com/golang/go1.17.4.linux-${arch}.tar.gz" | tar -C '/usr/local' -xvzf -
 ENV PATH /usr/local/go/bin:$PATH
+
 RUN go get github.com/mailhog/mhsendmail
 RUN cp /root/go/bin/mhsendmail /usr/bin/mhsendmail
 RUN mkdir /var/www/composer && chmod 777 -R  /var/www/composer
@@ -45,22 +47,25 @@ ENV PHP_ENABLE_XDEBUG false
 ENV MAGENTO_ROOT /var/www/magento
 ENV PHP_IDE_CONFIG serverName=magento
 ENV DEBUG false
+ENV PHP_IDE_CONFIG serverName=magento
 ENV COMPOSER_HOME /var/www/composer
 
 COPY etc/php-xdebug.ini /usr/local/etc/php/conf.d/zz-xdebug-settings.ini
 COPY etc/mail.ini /usr/local/etc/php/conf.d/zz-mail.ini
-
 COPY docker-entrypoint.sh /docker-entrypoint.sh
 
-RUN ["chmod", "+x", "/docker-entrypoint.sh"]
+RUN groupadd -g 1000 www && useradd -g 1000 -u 1000 -d ${MAGENTO_ROOT} -s /bin/bash www
+RUN echo '%www ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers && usermod -a -G www-data www && usermod -a -G www www-data && umask 002
 
-ENTRYPOINT ["/docker-entrypoint.sh"]
+RUN ["chmod", "+x", "/docker-entrypoint.sh"]
 
 ENV MAGENTO_RUN_MODE developer
 ENV UPLOAD_MAX_FILESIZE 64M
 
 COPY etc/php-fpm.ini /usr/local/etc/php/conf.d/zz-magento.ini
 COPY etc/php-fpm.conf /usr/local/etc/
+
+ENTRYPOINT ["/docker-entrypoint.sh"]
 
 WORKDIR ${MAGENTO_ROOT}
 

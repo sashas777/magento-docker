@@ -19,3 +19,15 @@ Magento 2 docker container images for local environment and tests.
 
 [ico-downloads]: https://img.shields.io/docker/pulls/sashas777/magento-php.svg?style=flat-square
 [link-dockerhub]: https://hub.docker.com/r/sashas777/
+
+# Build Images
+
+## PHP CLI
+```shell
+docker buildx build --platform linux/amd64,linux/arm64 -t sashas777/magento-php:8.1-cli --push -f php/8.1-cli/Dockerfile .
+```
+
+## PHP FPM
+```shell
+docker buildx build --platform linux/amd64,linux/arm64 -t sashas777/magento-php:8.1-fpm --push -f php/8.1-fpm/Dockerfile .
+```

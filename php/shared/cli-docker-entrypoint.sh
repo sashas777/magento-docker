@@ -27,24 +27,34 @@ if [[ "$UPDATE_UID_GID" = "true" ]]; then
     sudo groupmod -g $DOCKER_GID www
 fi
 
+source /var/www/.bashrc
+
 # Ensure our Magento directory exists
 mkdir -p $MAGENTO_ROOT
-chown -R www:www $MAGENTO_ROOT
+sudo chown -R www:www $MAGENTO_ROOT
+sudo chown -R www:www /var/www/composer
 umask 002
 sudo chgrp www $MAGENTO_ROOT
 sudo chmod g+s $MAGENTO_ROOT
-sudo chown -R www:www /var/www/composer
+
+CRON_LOG=/var/log/cron.log
+sudo touch $CRON_LOG
 
 # Substitute in php.ini values
 [ ! -z "${PHP_MEMORY_LIMIT}" ] && sudo sed -i "s/!PHP_MEMORY_LIMIT!/${PHP_MEMORY_LIMIT}/" /usr/local/etc/php/conf.d/zz-magento.ini
-[ ! -z "${UPLOAD_MAX_FILESIZE}" ] && sudo sed -i "s/!UPLOAD_MAX_FILESIZE!/${UPLOAD_MAX_FILESIZE}/" /usr/local/etc/php/conf.d/zz-magento.ini
+[ ! -z "${TZ}" ] && export TZ_ESCAPED=$(echo $TZ | sed 's/\//\\\//g') && sudo sed -i "s/!TZ!/${TZ_ESCAPED}/" /usr/local/etc/php/conf.d/zz-magento.ini
 
 [ "$PHP_ENABLE_XDEBUG" = "true" ] && \
     sudo -E docker-php-ext-enable xdebug && \
     echo "Xdebug is enabled"
 
-# Configure PHP-FPM
-[ ! -z "${MAGENTO_RUN_MODE}" ] && sudo sed -i "s/!MAGENTO_RUN_MODE!/${MAGENTO_RUN_MODE}/" /usr/local/etc/php-fpm.conf
+# Configure composer
+[ ! -z "${COMPOSER_GITHUB_TOKEN}" ] && \
+    composer config --global github-oauth.github.com $COMPOSER_GITHUB_TOKEN
+
+[ ! -z "${COMPOSER_MAGENTO_USERNAME}" ] && \
+    composer config --global http-basic.repo.magento.com \
+        $COMPOSER_MAGENTO_USERNAME $COMPOSER_MAGENTO_PASSWORD
 
 exec "$@"
 

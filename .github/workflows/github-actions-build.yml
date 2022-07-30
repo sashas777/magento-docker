@@ -60,27 +60,3 @@ jobs:
         run:  cd varnish/7.0/; docker build . --file Dockerfile --tag ${{ secrets.DOCKER_USERNAME }}/magento-varnish:7.0
       - name: Push image
         run:  docker push ${{ secrets.DOCKER_USERNAME }}/magento-varnish:7.0
-  push_to_registry:
-    name: PHP to Docker Hub
-    runs-on: self-hosted
-    steps:
-      - name: Check out the repo
-        uses: actions/checkout@v2
-      - name: Log into registry
-        run: echo "${{ secrets.DOCKER_PASSWORD }}" | docker login --username ${{ secrets.DOCKER_USERNAME }} --password-stdin
-      - name: Build image php 8.1-cli
-        run:  cd php/8.1-cli/; docker build . --file Dockerfile --tag ${{ secrets.DOCKER_USERNAME }}/magento-php:8.1-cli
-      - name: Push image
-        run:  docker push ${{ secrets.DOCKER_USERNAME }}/magento-php:8.1-cli
-      - name: Build image php 8.1-fpm
-        run:  cd php/8.1-fpm/; docker build . --file Dockerfile --tag ${{ secrets.DOCKER_USERNAME }}/magento-php:8.1-fpm
-      - name: Push image
-        run:  docker push ${{ secrets.DOCKER_USERNAME }}/magento-php:8.1-fpm
-      - name: Build image php 7.4-cli
-        run:  cd php/7.4-cli/; docker build . --file Dockerfile --tag ${{ secrets.DOCKER_USERNAME }}/magento-php:7.4-cli
-      - name: Push image
-        run:  docker push ${{ secrets.DOCKER_USERNAME }}/magento-php:7.4-cli
-      - name: Build image php 7.4-fpm
-        run:  cd php/7.4-fpm/; docker build . --file Dockerfile --tag ${{ secrets.DOCKER_USERNAME }}/magento-php:7.4-fpm
-      - name: Push image
-        run:  docker push ${{ secrets.DOCKER_USERNAME }}/magento-php:7.4-fpm

@@ -13,6 +13,7 @@ Magento 2 docker container images for local environment and tests.
 ## Support Matrix
 The image supported per official support docs or may be updated per GitHub request.
 If you interested in a specific version - feel free to contact or use GitHub sponsorship.
+The support matrix below has been created based on image downloads from DockerHub.
 
 | Image                | End of Life  | Support Status |
 |----------------------|--------------|----------------|
@@ -43,7 +44,7 @@ If you interested in a specific version - feel free to contact or use GitHub spo
 - [Pipelines/Local Environment Configuration](https://github.com/sashas777/magento-docker-pipelines)
 - [Magento 2 Test Framework](https://github.com/sashas777/magento2-testing-framework)
 - [Docker Hub](https://hub.docker.com/r/sashas777/)
-- Inspired by [meanbee/docker-magento2](https://github.com/meanbee/docker-magento2)
+- Inspired by [meanbee/docker-magento2](https://github.com/meanbee/docker-magento2), [Docksal](https://docksal.io/)
 
 [ico-downloads]: https://img.shields.io/docker/pulls/sashas777/magento-php.svg?style=flat-square
 [link-dockerhub]: https://hub.docker.com/r/sashas777/
@@ -53,11 +54,13 @@ If you interested in a specific version - feel free to contact or use GitHub spo
 ## PHP CLI
 ```shell
 docker buildx build --platform linux/amd64,linux/arm64 -t sashas777/magento-php:8.1-cli --push -f php/8.1-cli/Dockerfile .
+docker buildx build --platform linux/amd64,linux/arm64 -t sashas777/magento-php:7.4-cli --push -f php/7.4-cli/Dockerfile .
 ```
 
 ## PHP FPM
 ```shell
 docker buildx build --platform linux/amd64,linux/arm64 -t sashas777/magento-php:8.1-fpm --push -f php/8.1-fpm/Dockerfile .
+docker buildx build --platform linux/amd64,linux/arm64 -t sashas777/magento-php:7.4-fpm --push -f php/7.4-fpm/Dockerfile .
 ```
 
 ## Nginx

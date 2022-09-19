@@ -91,7 +91,6 @@ RUN sudo chmod +x /usr/bin/mhsendmail
 
 RUN mkdir /var/www/composer && chmod 777 -R  /var/www/composer
 
-ENV PHP_MEMORY_LIMIT 4G
 ENV PHP_ENABLE_XDEBUG false
 ENV MAGENTO_ROOT /var/www/magento
 ENV DEBUG false

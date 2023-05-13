@@ -87,6 +87,8 @@ COPY php/shared/etc/mail.ini /usr/local/etc/php/conf.d/zz-mail.ini
 COPY php/shared/fpm-docker-entrypoint.sh /docker-entrypoint.sh
 COPY php/shared/etc/php-fpm.ini /usr/local/etc/php/conf.d/zz-magento.ini
 COPY php/shared/etc/php-fpm.conf /usr/local/etc/
+COPY php/shared/magento-vars.php /var/www/magento-vars.php
+COPY php/shared/op-exclude.txt /var/www/op-exclude.txt
 
 RUN groupadd -g 1000 www && useradd -g 1000 -u 1000 -d ${MAGENTO_ROOT} -s /bin/bash www
 RUN echo '%www ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers && usermod -a -G www-data www && usermod -a -G www www-data && umask 002

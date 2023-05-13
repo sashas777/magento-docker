@@ -1,0 +1,6 @@
+/var/www/magento/*/app/etc/config.php
+/var/www/magento/*/app/etc/env.php
+/var/www/magento/app/etc/config.php
+/var/www/magento/app/etc/env.php
+/var/www/magento/etc/config.php
+/var/www/magento/etc/env.php

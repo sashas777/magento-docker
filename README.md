@@ -4,11 +4,11 @@
 
 Magento 2 docker container images for local environment and tests.
 
-## Get Started
+## How To Use Images
 
-- [Local Environment](https://github.com/sashas777/magento-docker-pipelines/wiki/Docker-Local-Environment-For-A-New-Project)
-- [Bitbucket Pipeline](https://github.com/sashas777/magento-docker-pipelines/wiki/Bitbucket-Pipeline)
-- [GitLab CI/CD Pipeline](https://github.com/sashas777/magento-docker-pipelines/wiki/GitLab-CI-CD-Pipeline)
+- [How to use images for Local Environment](https://github.com/sashas777/magento-docker-pipelines/wiki/Docker-Local-Environment-For-A-New-Project)
+- [How to use images with Bitbucket Pipeline](https://github.com/sashas777/magento-docker-pipelines/wiki/Bitbucket-Pipeline)
+- [How to use images with GitLab CI/CD Pipeline](https://github.com/sashas777/magento-docker-pipelines/wiki/GitLab-CI-CD-Pipeline)
 
 ## Support Matrix
 The image supported per official support docs or may be updated per GitHub request.
@@ -76,22 +76,27 @@ docker buildx build --platform linux/amd64,linux/arm64 -t sashas777/magento-php:
 
 ## Nginx
 ```shell
-docker buildx build --platform linux/amd64,linux/arm64 -t sashas777/magento-nginx:1.21 --push -f Dockerfile .
-docker buildx build --platform linux/amd64,linux/arm64 -t sashas777/magento-nginx:1.22 --push -f Dockerfile .
-docker buildx build --platform linux/amd64,linux/arm64 -t sashas777/magento-nginx:latest --push -f Dockerfile .
+docker buildx build --platform linux/amd64,linux/arm64 -t sashas777/magento-nginx:1.21 --push -f nginx/1.21/Dockerfile .
+docker buildx build --platform linux/amd64,linux/arm64 -t sashas777/magento-nginx:1.22 --push -f  nginx/1.22/Dockerfile .
+docker buildx build --platform linux/amd64,linux/arm64 -t sashas777/magento-nginx:latest --push -f  nginx/latest/Dockerfile .
 ```
 
 ## ElasticSearch
 ```shell
-docker buildx build --platform linux/amd64,linux/arm64 -t sashas777/magento-elasticsearch:7.17.10 --push -f Dockerfile .
+docker buildx build --platform linux/amd64,linux/arm64 -t sashas777/magento-elasticsearch:8.4.3 --push -f elasticsearch/8.4.3/Dockerfile .
+docker buildx build --platform linux/amd64,linux/arm64 -t sashas777/magento-elasticsearch:7.17.10 --push -f elasticsearch/7.17.10/Dockerfile .
+docker buildx build --platform linux/amd64,linux/arm64 -t sashas777/magento-elasticsearch:7.16.3 --push -f elasticsearch/7.16.3/Dockerfile .
+docker buildx build --platform linux/amd64,linux/arm64 -t sashas777/magento-elasticsearch:7.9.3 --push -f elasticsearch/7.9.3/Dockerfile .
 ```
 
 ## Varnish
 ```shell
-docker buildx build --platform linux/amd64,linux/arm64 -t sashas777/magento-varnish:7.1 --push -f Dockerfile .
+docker buildx build --platform linux/amd64,linux/arm64 -t sashas777/magento-varnish:7.1 --push -f varnish/7.1/Dockerfile .
+docker buildx build --platform linux/amd64,linux/arm64 -t sashas777/magento-varnish:7.0 --push -f varnish/7.0/Dockerfile .
 ```
 
 ## Redis
 ```shell
+docker buildx build --platform linux/amd64,linux/arm64 -t sashas777/magento-redis:6.2 --push -f Dockerfile .
 docker buildx build --platform linux/amd64,linux/arm64 -t sashas777/magento-redis:7.0 --push -f Dockerfile .
 ```

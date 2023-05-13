@@ -19,10 +19,12 @@ ENV UPSTREAM_HOST web
 ENV UPSTREAM_PORT 8080
 ENV DEBUG false
 
-COPY etc/nginx.conf /etc/nginx/
-COPY etc/vhost.conf /etc/nginx/conf.d/default.conf
-COPY etc/mapping.conf /etc/nginx/conf.d/a-mapping.conf
-COPY etc/nginx.conf.sample /etc/nginx/magento.conf.sample
+COPY nginx/shared/etc/nginx.conf /etc/nginx/
+COPY nginx/shared/etc/vhost.conf /etc/nginx/conf.d/default.conf
+COPY nginx/shared/etc/mapping.conf /etc/nginx/conf.d/a-mapping.conf
+COPY nginx/shared/etc/nginx.conf.sample /etc/nginx/magento.conf.sample
+COPY nginx/shared/docker-entrypoint.sh /docker-entrypoint.sh
+COPY nginx/shared/docker-healthcheck.sh /docker-healthcheck.sh
 
 RUN mkdir /etc/nginx/ssl
 
@@ -33,8 +35,9 @@ RUN openssl req -x509 -nodes -days 730 \
 
 EXPOSE 443
 
-COPY docker-entrypoint.sh /docker-entrypoint.sh
 RUN ["chmod", "+x", "/docker-entrypoint.sh"]
 ENTRYPOINT ["/docker-entrypoint.sh"]
 
 CMD ["nginx", "-g", "daemon off;"]
+
+HEALTHCHECK --interval=5s --timeout=1s --retries=12 CMD ["/docker-healthcheck.sh"]

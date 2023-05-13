@@ -16,6 +16,7 @@ ENV TZ=America/New_York
 RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 
 RUN apt-get update && apt-get install -y sudo software-properties-common gpg
+RUN curl -fsSL https://deb.nodesource.com/setup_20.x | sudo -E bash -
 
 RUN touch /var/www/.bashrc
 
@@ -41,6 +42,7 @@ RUN apt-get update \
     libmagickwand-dev \
     nodejs \
     ssh \
+    openconnect \
     unzip --no-install-recommends
 
 # Configure the gd library
@@ -75,8 +77,8 @@ RUN rm -f /usr/local/etc/php/conf.d/*sodium.ini \
 
 #SourceGuardian
 RUN PHP_VERSION=$(php -v | head -n1 | cut -d' ' -f2 | cut -d. -f1-2) \
-    && if [ $(uname -m) = "x86_64" ]; then sg_arch_file="loaders.linux-x86_64.tar.gz"; else sg_arch_file="loaders.macosx-arm64.tar.gz"; fi \
-    && if [ $(uname -m) = "x86_64" ]; then sg_module_ext="lin"; else sg_module_ext="dar"; fi \
+    && if [ $(uname -m) = "x86_64" ]; then sg_arch_file="loaders.linux-x86_64.tar.gz"; else sg_arch_file="loaders.linux-aarch64.tar.gz"; fi \
+    && if [ $(uname -m) = "x86_64" ]; then sg_module_ext="lin"; else sg_module_ext="lin"; fi \
     && mkdir -p /tmp/sourceguardian \
     && cd /tmp/sourceguardian \
     && curl -Os https://www.sourceguardian.com/loaders/download/${sg_arch_file} \

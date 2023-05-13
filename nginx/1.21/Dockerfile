@@ -6,6 +6,7 @@ RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 RUN apt-get update \
   && apt-get install -y \
     openssl \
+    net-tools \
     nano
 
 ENV UPLOAD_MAX_FILESIZE 64M
@@ -35,9 +36,9 @@ RUN openssl req -x509 -nodes -days 730 \
 
 EXPOSE 443
 
-
-
 RUN ["chmod", "+x", "/docker-entrypoint.sh"]
+RUN ["chmod", "+x", "/docker-healthcheck.sh"]
+
 ENTRYPOINT ["/docker-entrypoint.sh"]
 
 CMD ["nginx", "-g", "daemon off;"]

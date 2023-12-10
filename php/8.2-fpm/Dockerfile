@@ -101,3 +101,6 @@ ENTRYPOINT ["/docker-entrypoint.sh"]
 WORKDIR ${MAGENTO_ROOT}
 
 CMD ["php-fpm", "-R"]
+
+#HEALTHCHECK --interval=5s --timeout=1s --retries=12 CMD ["/docker-healthcheck.sh"]
+# php-fpm -t

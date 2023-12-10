@@ -23,7 +23,7 @@ The support matrix below has been created based on image downloads from DockerHu
 | php:7.1               | Nov 28, 2018 | Inactive       |
 | php:7.2               | Nov 28, 2019 | Inactive       |
 | php:7.3               | Nov 28, 2020 | Inactive       |
-| php:7.4               | Nov 28, 2022 | Active         |
+| php:7.4               | Nov 28, 2022 | Inactive         |
 | php:8.1               | Nov 25, 2024 | Active         |
 | php:8.2               | Dec 8, 2024  | Active         |
 | php:arm64v8           | N/A          | Inactive       |

@@ -23,7 +23,7 @@ The support matrix below has been created based on image downloads from DockerHu
 | php:7.1               | Nov 28, 2018 | Inactive       |
 | php:7.2               | Nov 28, 2019 | Inactive       |
 | php:7.3               | Nov 28, 2020 | Inactive       |
-| php:7.4               | Nov 28, 2022 | Inactive         |
+| php:7.4               | Nov 28, 2022 | Inactive       |
 | php:8.1               | Nov 25, 2024 | Active         |
 | php:8.2               | Dec 8, 2024  | Active         |
 | php:arm64v8           | N/A          | Inactive       |
@@ -33,9 +33,10 @@ The support matrix below has been created based on image downloads from DockerHu
 | elasticsearch:6.8.0   | Feb 10, 2022 | Inactive       |
 | elasticsearch:7.6.2   | Aug 11, 2021 | Inactive       |
 | elasticsearch:7.9.3   | Feb 18, 2022 | Active         |
-| elasticsearch:7.16.3  | Aug 1, 2023  | Active         |
-| elasticsearch:7.17.10 | Aug 1, 2023  | Active         |
+| elasticsearch:7.16.3  | Aug 1, 2023  | Inactive       |
+| elasticsearch:7.17.10 | Aug 1, 2023  | Inactive       |
 | elasticsearch:8.4.3   | Aug 10, 2024 | Active         |
+| elasticsearch:8.5.3   | Aug 10, 2024 | Active         |
 | nginx:1.9             | 2015         | Inactive       |
 | nginx:1.21            | 2021         | Active         |
 | nginx:1.22            | Apr 11, 2023 | Active         |
@@ -83,6 +84,7 @@ docker buildx build --platform linux/amd64,linux/arm64 -t sashas777/magento-ngin
 
 ## ElasticSearch
 ```shell
+docker buildx build --platform linux/amd64,linux/arm64 -t sashas777/magento-elasticsearch:8.5.3 --push -f elasticsearch/8.5.3/Dockerfile .
 docker buildx build --platform linux/amd64,linux/arm64 -t sashas777/magento-elasticsearch:8.4.3 --push -f elasticsearch/8.4.3/Dockerfile .
 docker buildx build --platform linux/amd64,linux/arm64 -t sashas777/magento-elasticsearch:7.17.10 --push -f elasticsearch/7.17.10/Dockerfile .
 docker buildx build --platform linux/amd64,linux/arm64 -t sashas777/magento-elasticsearch:7.16.3 --push -f elasticsearch/7.16.3/Dockerfile .

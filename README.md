@@ -33,6 +33,7 @@ The support matrix below has been created based on image downloads from DockerHu
 | elasticsearch:6.8.0   | Feb 10, 2022 | Inactive       |
 | elasticsearch:7.6.2   | Aug 11, 2021 | Inactive       |
 | elasticsearch:7.9.3   | Feb 18, 2022 | Active         |
+| elasticsearch:7.13.4  | Aug 1, 2023  | Inactive       |
 | elasticsearch:7.16.3  | Aug 1, 2023  | Inactive       |
 | elasticsearch:7.17.10 | Aug 1, 2023  | Inactive       |
 | elasticsearch:8.4.3   | Aug 10, 2024 | Active         |

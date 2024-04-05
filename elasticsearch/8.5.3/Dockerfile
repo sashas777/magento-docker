@@ -2,6 +2,11 @@ FROM docker.elastic.co/elasticsearch/elasticsearch:8.5.3
 
 RUN echo "xpack.security.enabled: false" >> /usr/share/elasticsearch/config/elasticsearch.yml
 RUN echo "discovery.type: single-node" >> /usr/share/elasticsearch/config/elasticsearch.yml
+RUN echo "
+indices:
+  id_field_data:
+    enabled: true
+" >> /usr/share/elasticsearch/config/elasticsearch.yml
 
 RUN bin/elasticsearch-plugin install -b analysis-phonetic
 RUN bin/elasticsearch-plugin install -b analysis-icu

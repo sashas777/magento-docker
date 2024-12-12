@@ -1,4 +1,4 @@
-FROM golang:latest AS builder
+FROM golang:1.19 AS builder
 
 RUN if [ $(uname -m) = "x86_64" ]; then mailhog_arch="amd64"; else mailhog_arch="arm64"; fi \
     && wget -O mhsendmail.tar.gz https://github.com/mailhog/mhsendmail/archive/refs/tags/v0.2.0.tar.gz \
@@ -42,6 +42,7 @@ RUN apt-get update \
     libmagickwand-dev \
     nodejs \
     ssh \
+    librabbitmq-dev \
     openconnect \
     unzip --no-install-recommends
 
@@ -51,8 +52,10 @@ RUN docker-php-ext-configure gd --with-freetype --with-jpeg
 # Install required PHP extensions
 RUN docker-php-ext-install dom gd intl mbstring pdo_mysql xsl zip soap bcmath pcntl sockets mysqli
 
-RUN pecl install -o -f xdebug imagick
+RUN pecl install -o -f amqp
+RUN docker-php-ext-enable amqp
 
+RUN pecl install -o -f xdebug imagick
 RUN docker-php-ext-enable imagick
 
 RUN curl -L https://packages.blackfire.io/gpg.key | gpg --dearmor > blackfire.io-archive-keyring.gpg \

@@ -1,29 +1,17 @@
-FROM golang:latest AS builder
-
-RUN if [ $(uname -m) = "x86_64" ]; then mailhog_arch="amd64"; else mailhog_arch="arm64"; fi \
-    && wget -O mhsendmail.tar.gz https://github.com/mailhog/mhsendmail/archive/refs/tags/v0.2.0.tar.gz \
-    && tar -xf mhsendmail.tar.gz \
-    && mkdir -p ./src/github.com/mailhog/ \
-    && mv ./mhsendmail-0.2.0 ./src/github.com/mailhog/mhsendmail \
-    && cd ./src/github.com/mailhog/mhsendmail/ \
-    && go env -w GO111MODULE=auto \
-    && go get . \
-    && GOOS=linux GOARCH=${mailhog_arch} go build -o mhsendmail .
-
 FROM php:8.2-fpm
 
 ENV TZ=America/New_York
 RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 
-RUN apt-get update && apt-get install -y sudo software-properties-common
-
 # Install dependencies
 RUN apt-get update \
   && apt-get install -y \
-    libfreetype6-dev \ 
-    libicu-dev \ 
-    libjpeg62-turbo-dev \ 
-    libmcrypt-dev \ 
+    sudo \
+    software-properties-common \
+    libfreetype6-dev \
+    libicu-dev \
+    libjpeg62-turbo-dev \
+    libmcrypt-dev \
     libpng-dev \
     libzip-dev \
     libxslt1-dev \
@@ -31,31 +19,18 @@ RUN apt-get update \
     nano \
     ca-certificates \
     libmagickwand-dev \
-    libonig-dev --no-install-recommends
+    librabbitmq-dev \
+    msmtp \
+    libonig-dev --no-install-recommends \
+    && rm -rf /var/lib/apt/lists/*
 
 # Configure the gd library
 RUN docker-php-ext-configure gd --with-freetype --with-jpeg
 
-# Install required PHP extensions
+## Install required PHP extensions
 RUN docker-php-ext-install dom gd intl mbstring pdo_mysql xsl zip soap bcmath pcntl sockets mysqli
-
-RUN pecl install -o -f xdebug imagick
-
-RUN docker-php-ext-enable imagick
-
-RUN rm -f /usr/local/etc/php/conf.d/*sodium.ini \
-  && rm -f /usr/local/lib/php/extensions/*/*sodium.so \
-  && apt-get remove libsodium* -y \
-  && mkdir -p /tmp/libsodium \
-  && curl -sL https://github.com/jedisct1/libsodium/archive/1.0.18-RELEASE.tar.gz | tar xzf - -C  /tmp/libsodium \
-  && cd /tmp/libsodium/libsodium-1.0.18-RELEASE/ \
-  && ./configure \
-  && make && make check \
-  && make install \
-  && cd / \
-  && rm -rf /tmp/libsodium \
-  && pecl install -o -f libsodium \
-  && echo "extension=sodium.so" > /usr/local/etc/php/conf.d/zz-sodium.ini
+RUN pecl install -o -f amqp xdebug imagick
+RUN docker-php-ext-enable imagick amqp
 
 #SourceGuardian
 RUN PHP_VERSION=$(php -v | head -n1 | cut -d' ' -f2 | cut -d. -f1-2) \
@@ -68,10 +43,6 @@ RUN PHP_VERSION=$(php -v | head -n1 | cut -d' ' -f2 | cut -d. -f1-2) \
     && cp ixed.${PHP_VERSION}.${sg_module_ext} "$(php -i | grep '^extension_dir =' | cut -d' ' -f3)/sourceguardian.so" \
     && echo "extension=sourceguardian.so" > /usr/local/etc/php/conf.d/zz-sourceguardian.ini \
     && rm -rf /tmp/sourceguardian
-
-# Install MailHog
-COPY --from=builder /go/src/github.com/mailhog/mhsendmail/mhsendmail /usr/bin/mhsendmail
-RUN sudo chmod +x /usr/bin/mhsendmail
 
 RUN mkdir /var/www/composer && chmod 777 -R  /var/www/composer
 

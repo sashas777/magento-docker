@@ -28,8 +28,9 @@ To make things even easier, we’ve included a CLI interface for quickly creatin
 | 2.4.3.x                | 7.4      | 7.16          | 1.2        | 1.18       | 6.0           | 6.5                | 
 | 2.4.2.x                | 7.4      | 7.9           | N/A        | 1.18       | 6.0           | 6.4                | 
 
-
 Source: [Adobe Commerce System requirements](https://experienceleague.adobe.com/docs/commerce-operations/installation-guide/system-requirements.html)
+
+Do you need OpenSearch? If so submit a GitHub issue, please.
 
 ## Docker Images
 The table below lists all Docker images available and ready for use with the Adobe Commerce platform. Note that older versions no longer receive updates and remain at their last working build.
@@ -69,7 +70,7 @@ If you're interested in having a specific version updated, feel free to contact 
 | varnish:6.5           | Sep 15, 2021 | Inactive      |
 | varnish:7.0           | Sep 15, 2022 | Inactive      |
 | varnish:7.1           | Mar 15, 2023 | Inactive      |
-| varnish:7.5           | Mar 15, 2025 | Active             |
+| varnish:7.5           | Mar 15, 2025 | Active        |
 
 EOL Sources:
 - [Elasticsearch](https://www.elastic.co/support/eol)

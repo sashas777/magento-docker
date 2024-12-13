@@ -1,9 +1,14 @@
 FROM php:8.2-cli
 
 ENV TZ=America/New_York
-RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
+ARG TARGETARCH
+ARG PHP_SHORT_VERSION=8.2
+RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone \
+    && touch /var/www/.bashrc
 
-RUN touch /var/www/.bashrc
+# Blackfire
+RUN curl -L https://packages.blackfire.io/gpg.key | dd of=/usr/share/keyrings/blackfire-archive-keyring.asc \
+  && echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/blackfire-archive-keyring.asc] http://packages.blackfire.io/debian any main" | tee /etc/apt/sources.list.d/blackfire.list
 
 # Install dependencies
 RUN apt-get update \
@@ -12,6 +17,8 @@ RUN apt-get update \
     sudo \
     gpg \
     wget \
+    blackfire-php \
+    blackfire \
     libfreetype6-dev \
     libicu-dev \
     libjpeg62-turbo-dev \
@@ -45,23 +52,14 @@ RUN docker-php-ext-install dom gd intl mbstring pdo_mysql xsl zip soap bcmath pc
 RUN pecl install -o -f amqp xdebug imagick
 RUN docker-php-ext-enable imagick amqp
 
-# Blackfire
-RUN curl -L https://packages.blackfire.io/gpg.key | gpg --dearmor > blackfire.io-archive-keyring.gpg \
-  && install -o root -g root -m 644 blackfire.io-archive-keyring.gpg /etc/apt/trusted.gpg.d/ \
-  && echo "deb http://packages.blackfire.io/debian any main" | tee /etc/apt/sources.list.d/blackfire.list \
-  && apt-get update \
-  && apt-get install blackfire-php \
-  && rm -rf /var/lib/apt/lists/*
-
 #SourceGuardian
-RUN PHP_VERSION=$(php -v | head -n1 | cut -d' ' -f2 | cut -d. -f1-2) \
-    && if [ $(uname -m) = "x86_64" ]; then sg_arch_file="loaders.linux-x86_64.tar.gz"; else sg_arch_file="loaders.linux-aarch64.tar.gz"; fi \
-    && if [ $(uname -m) = "x86_64" ]; then sg_module_ext="lin"; else sg_module_ext="lin"; fi \
-    && mkdir -p /tmp/sourceguardian \
-    && cd /tmp/sourceguardian \
-    && curl -Os https://www.sourceguardian.com/loaders/download/${sg_arch_file} \
-    && tar xzf ${sg_arch_file} \
-    && cp ixed.${PHP_VERSION}.${sg_module_ext} "$(php -i | grep '^extension_dir =' | cut -d' ' -f3)/sourceguardian.so" \
+RUN if [ ${TARGETARCH} = "x86_64" ]; then file="loaders.linux-x86_64.tar.gz"; ext=".lin"; fi \
+    && if [ ${TARGETARCH} = "amd64" ]; then file="loaders.linux-x86_64.tar.gz"; ext=".lin"; fi \
+    && if [ ${TARGETARCH} = "aarch64" ]; then file="loaders.linux-aarch64.tar.gz"; ext=".lin"; fi \
+    && if [ ${TARGETARCH} = "arm64" ]; then file="loaders.macosx-arm64.tar.gz"; ext=".dar"; fi \
+    && mkdir -p /tmp/sourceguardian && cd /tmp/sourceguardian \
+    && curl -Os https://www.sourceguardian.com/loaders/download/${file} && tar xzf ${file} \
+    && cp ixed.${PHP_SHORT_VERSION}${ext} "$(php -i | grep '^extension_dir =' | cut -d' ' -f3)/sourceguardian.so" \
     && echo "extension=sourceguardian.so" > /usr/local/etc/php/conf.d/zz-sourceguardian.ini \
     && rm -rf /tmp/sourceguardian
 

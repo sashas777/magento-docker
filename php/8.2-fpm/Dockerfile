@@ -1,6 +1,8 @@
 FROM php:8.2-fpm
 
 ENV TZ=America/New_York
+ARG TARGETARCH
+ARG PHP_SHORT_VERSION=8.2
 RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 
 # Install dependencies
@@ -33,14 +35,13 @@ RUN pecl install -o -f amqp xdebug imagick
 RUN docker-php-ext-enable imagick amqp
 
 #SourceGuardian
-RUN PHP_VERSION=$(php -v | head -n1 | cut -d' ' -f2 | cut -d. -f1-2) \
-    && if [ $(uname -m) = "x86_64" ]; then sg_arch_file="loaders.linux-x86_64.tar.gz"; else sg_arch_file="loaders.macosx-arm64.tar.gz"; fi \
-    && if [ $(uname -m) = "x86_64" ]; then sg_module_ext="lin"; else sg_module_ext="dar"; fi \
-    && mkdir -p /tmp/sourceguardian \
-    && cd /tmp/sourceguardian \
-    && curl -Os https://www.sourceguardian.com/loaders/download/${sg_arch_file} \
-    && tar xzf ${sg_arch_file} \
-    && cp ixed.${PHP_VERSION}.${sg_module_ext} "$(php -i | grep '^extension_dir =' | cut -d' ' -f3)/sourceguardian.so" \
+RUN if [ ${TARGETARCH}= "x86_64" ]; then file="loaders.linux-x86_64.tar.gz"; ext=".lin"; fi \
+    && if [ ${TARGETARCH} = "amd64" ]; then file="loaders.linux-x86_64.tar.gz"; ext=".lin"; fi \
+    && if [ ${TARGETARCH} = "aarch64" ]; then file="loaders.linux-aarch64.tar.gz"; ext=".lin"; fi \
+    && if [ ${TARGETARCH} = "arm64" ]; then file="loaders.macosx-arm64.tar.gz"; ext=".dar"; fi \
+    && mkdir -p /tmp/sourceguardian && cd /tmp/sourceguardian \
+    && curl -Os https://www.sourceguardian.com/loaders/download/${file} && tar xzf ${file} \
+    && cp ixed.${PHP_SHORT_VERSION}${ext} "$(php -i | grep '^extension_dir =' | cut -d' ' -f3)/sourceguardian.so" \
     && echo "extension=sourceguardian.so" > /usr/local/etc/php/conf.d/zz-sourceguardian.ini \
     && rm -rf /tmp/sourceguardian
 

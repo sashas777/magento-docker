@@ -35,42 +35,46 @@ Source: [Adobe Commerce System requirements](https://experienceleague.adobe.com/
 The table below lists all Docker images available and ready for use with the Adobe Commerce platform. Note that older versions no longer receive updates and remain at their last working build.
 If you're interested in having a specific version updated, feel free to contact me via GitHub issues or a sponsorship request.
 
-| Image                 | End of Life   | Update Status |
-|-----------------------|---------------|---------------|
-| php:7.1               | Nov 28, 2018  | Inactive      |
-| php:7.2               | Nov 28, 2019  | Inactive      |
-| php:7.3               | Nov 28, 2020  | Inactive      |
-| php:7.4               | Nov 28, 2022  | Inactive      |
-| php:8.1               | Nov 25, 2024  | Inactive      |
-| php:8.2               | Dec 8, 2024   | Active        |
-| php:8.3               | Nov 23, 2026  | Active        |
-| php:arm64v8           | N/A           | Inactive      |
-| elasticsearch:1.7     | Jan 16, 2017  | Inactive      |
-| elasticsearch:2.4     | Apr 28, 2017  | Inactive      |
-| elasticsearch:5.2     | Jul 31, 2018  | Inactive      |
-| elasticsearch:6.8.0   | Feb 10, 2022  | Inactive      |
-| elasticsearch:7.6.2   | Aug 11, 2021  | Inactive      |
-| elasticsearch:7.9.3   | Feb 18, 2022  | Inactive      |
-| elasticsearch:7.13.4  | Aug 1, 2023   | Inactive      |
-| elasticsearch:7.16.3  | Aug 1, 2023   | Inactive      |
-| elasticsearch:7.17.10 | Aug 1, 2023   | Inactive      |
-| elasticsearch:8.4.3   | Aug 10, 2024  | Inactive      |
-| elasticsearch:8.5.3   | Aug 10, 2024  | Inactive      |
-| elasticsearch:8.11.4  | Aug 10, 2024  | Active        |
-| nginx:1.9             | 2015          | Inactive      |
-| nginx:1.21            | 2021          | Active        |
-| nginx:1.22            | Apr 11, 2023  | Active        |
-| nginx:latest          | N/A           | Active        |
-| nginx:arm64v8         | N/A           | Inactive      |
-| redis:5.0             | Dec 31, 2019  | Inactive      |
-| redis:6.2             | Aug 31, 2023  | Active        |
-| redis:7.0             | N/A           | Active        |
-| varnish:6.5           | Sep 15, 2021  | Inactive      |
-| varnish:7.0           | Sep 15, 2022  | Active        |
-| varnish:7.1           | Mar 15, 2023  | Active        |
+| Image                 | End of Life  | Update Status |
+|-----------------------|--------------|---------------|
+| php:7.1               | Nov 28, 2018 | Inactive      |
+| php:7.2               | Nov 28, 2019 | Inactive      |
+| php:7.3               | Nov 28, 2020 | Inactive      |
+| php:7.4               | Nov 28, 2022 | Inactive      |
+| php:8.1               | Nov 25, 2024 | Inactive      |
+| php:8.2               | Dec 8, 2024  | Active        |
+| php:8.3               | Nov 23, 2026 | Active        |
+| php:arm64v8           | N/A          | Inactive      |
+| elasticsearch:1.7     | Jan 16, 2017 | Inactive      |
+| elasticsearch:2.4     | Apr 28, 2017 | Inactive      |
+| elasticsearch:5.2     | Jul 31, 2018 | Inactive      |
+| elasticsearch:6.8.0   | Feb 10, 2022 | Inactive      |
+| elasticsearch:7.6.2   | Aug 11, 2021 | Inactive      |
+| elasticsearch:7.9.3   | Feb 18, 2022 | Inactive      |
+| elasticsearch:7.13.4  | Aug 1, 2023  | Inactive      |
+| elasticsearch:7.16.3  | Aug 1, 2023  | Inactive      |
+| elasticsearch:7.17.10 | Aug 1, 2023  | Inactive      |
+| elasticsearch:8.4.3   | Aug 10, 2024 | Inactive      |
+| elasticsearch:8.5.3   | Aug 10, 2024 | Inactive      |
+| elasticsearch:8.11.4  | Aug 10, 2024 | Active        |
+| nginx:1.9             | 2015         | Inactive      |
+| nginx:1.21            | 2021         | Active        |
+| nginx:1.22            | Apr 11, 2023 | Active        |
+| nginx:latest          | N/A          | Active        |
+| nginx:arm64v8         | N/A          | Inactive      |
+| redis:5.0             | Dec 31, 2019 | Inactive      |
+| redis:6.2             | Feb 28, 2025 | Inactive      |
+| redis:7.0             | N/A          | Inactive      |
+| redis:7.2             | Feb, 2026    | Active        |
+| varnish:6.5           | Sep 15, 2021 | Inactive      |
+| varnish:7.0           | Sep 15, 2022 | Inactive      |
+| varnish:7.1           | Mar 15, 2023 | Inactive      |
+| varnish:7.5           | Mar 15, 2025 | Active             |
 
-Sources:
+EOL Sources:
 - [Elasticsearch](https://www.elastic.co/support/eol)
+- [Redis](https://redis.io/docs/latest/operate/rs/installing-upgrading/product-lifecycle/)
+- [Varnish](https://varnish-cache.org/releases/)
 
 # Related Resources
 
@@ -110,12 +114,10 @@ docker buildx build --platform linux/amd64,linux/arm64 -t sashas777/magento-elas
 
 ## Varnish
 ```shell
-docker buildx build --platform linux/amd64,linux/arm64 -t sashas777/magento-varnish:7.1 --push -f varnish/7.1/Dockerfile .
-docker buildx build --platform linux/amd64,linux/arm64 -t sashas777/magento-varnish:7.0 --push -f varnish/7.0/Dockerfile .
+docker buildx build --platform linux/amd64,linux/arm64,linux/arm/v7 -t sashas777/magento-varnish:7.5 --push -f varnish/7.5/Dockerfile .
 ```
 
 ## Redis
 ```shell
-docker buildx build --platform linux/amd64,linux/arm64 -t sashas777/magento-redis:6.2 --push -f Dockerfile .
-docker buildx build --platform linux/amd64,linux/arm64 -t sashas777/magento-redis:7.0 --push -f Dockerfile .
+docker buildx build --platform linux/amd64,linux/arm64,linux/arm/v7 -t sashas777/magento-redis:7.2 --push -f redis/7.2/Dockerfile .
 ```

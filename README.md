@@ -59,8 +59,9 @@ If you're interested in having a specific version updated, feel free to contact 
 | elasticsearch:8.5.3   | Aug 10, 2024 | Inactive      |
 | elasticsearch:8.11.4  | Aug 10, 2024 | Active        |
 | nginx:1.9             | 2015         | Inactive      |
-| nginx:1.21            | 2021         | Active        |
-| nginx:1.22            | Apr 11, 2023 | Active        |
+| nginx:1.21            | 2021         | Inactive      |
+| nginx:1.22            | Apr 11, 2023 | Inactive      |
+| nginx:1.24            | Apr 23, 2024 | Active        |
 | nginx:latest          | N/A          | Active        |
 | nginx:arm64v8         | N/A          | Inactive      |
 | redis:5.0             | Dec 31, 2019 | Inactive      |
@@ -103,9 +104,8 @@ docker buildx build --platform linux/amd64,linux/arm64,linux/arm/v7 -t sashas777
 
 ## Nginx
 ```shell
-docker buildx build --platform linux/amd64,linux/arm64 -t sashas777/magento-nginx:1.21 --push -f nginx/1.21/Dockerfile .
-docker buildx build --platform linux/amd64,linux/arm64 -t sashas777/magento-nginx:1.22 --push -f  nginx/1.22/Dockerfile .
-docker buildx build --platform linux/amd64,linux/arm64 -t sashas777/magento-nginx:latest --push -f  nginx/latest/Dockerfile .
+docker buildx build --platform linux/amd64,linux/arm64,linux/arm/v7 -t sashas777/magento-nginx:1.24 --push -f  nginx/1.24/Dockerfile .
+docker buildx build --platform linux/amd64,linux/arm64,linux/arm/v7 -t sashas777/magento-nginx:latest --push -f  nginx/latest/Dockerfile .
 ```
 
 ## ElasticSearch

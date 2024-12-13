@@ -1,14 +1,21 @@
-## Adobe Commerce Docker Container Images
+## Welcome to Adobe Commerce Docker Images
 
 [![Docker Pulls][ico-downloads]][link-dockerhub]
 
-Adobe Commerce Docker images for local environment and automated tests.
+This project was born out of necessity - when no working Docker images for Adobe Commerce were available, I took the initiative to create something reliable and efficient, building upon the foundation of the Meanbee images.
+These Docker images are designed to make your Adobe Commerce or similar environments effortless to set up, requiring no additional software installations.
+## Why Choose These Docker Images?
+ - Seamless setup for Adobe Commerce.
+ - Fully customizable to suit your unique project requirements.
+
+To make things even easier, we’ve included a CLI interface for quickly creating and managing your environment (But I still improving it).
 
 ## How To Use Images
 
 - [How to use images for Local Environment](https://github.com/sashas777/magento-docker-pipelines/wiki/Docker-Local-Environment-For-A-New-Project)
 - [How to use images with Bitbucket Pipeline](https://github.com/sashas777/magento-docker-pipelines/wiki/Bitbucket-Pipeline)
 - [How to use images with GitLab CI/CD Pipeline](https://github.com/sashas777/magento-docker-pipelines/wiki/GitLab-CI-CD-Pipeline)
+- [How to setup with CLI [WIP]](https://github.com/sashas777/docker_cli)
 
 ## Adobe Commerce Support
 
@@ -26,7 +33,7 @@ Source: [Adobe Commerce System requirements](https://experienceleague.adobe.com/
 
 ## Docker Images
 The table below lists all Docker images available and ready for use with the Adobe Commerce platform. Note that older versions no longer receive updates and remain at their last working build.
-If you're interested in having a specific version updated, feel free to contact us via GitHub issues or a sponsorship request.
+If you're interested in having a specific version updated, feel free to contact me via GitHub issues or a sponsorship request.
 
 | Image                 | End of Life   | Update Status |
 |-----------------------|---------------|---------------|
@@ -43,12 +50,13 @@ If you're interested in having a specific version updated, feel free to contact 
 | elasticsearch:5.2     | Jul 31, 2018  | Inactive      |
 | elasticsearch:6.8.0   | Feb 10, 2022  | Inactive      |
 | elasticsearch:7.6.2   | Aug 11, 2021  | Inactive      |
-| elasticsearch:7.9.3   | Feb 18, 2022  | Active        |
+| elasticsearch:7.9.3   | Feb 18, 2022  | Inactive      |
 | elasticsearch:7.13.4  | Aug 1, 2023   | Inactive      |
 | elasticsearch:7.16.3  | Aug 1, 2023   | Inactive      |
 | elasticsearch:7.17.10 | Aug 1, 2023   | Inactive      |
-| elasticsearch:8.4.3   | Aug 10, 2024  | Active        |
-| elasticsearch:8.5.3   | Aug 10, 2024  | Active        |
+| elasticsearch:8.4.3   | Aug 10, 2024  | Inactive      |
+| elasticsearch:8.5.3   | Aug 10, 2024  | Inactive      |
+| elasticsearch:8.11.4  | Aug 10, 2024  | Active        |
 | nginx:1.9             | 2015          | Inactive      |
 | nginx:1.21            | 2021          | Active        |
 | nginx:1.22            | Apr 11, 2023  | Active        |
@@ -60,6 +68,9 @@ If you're interested in having a specific version updated, feel free to contact 
 | varnish:6.5           | Sep 15, 2021  | Inactive      |
 | varnish:7.0           | Sep 15, 2022  | Active        |
 | varnish:7.1           | Mar 15, 2023  | Active        |
+
+Sources:
+- [Elasticsearch](https://www.elastic.co/support/eol)
 
 # Related Resources
 
@@ -76,13 +87,13 @@ If you're interested in having a specific version updated, feel free to contact 
 ## PHP CLI
 ```shell
 docker buildx build --platform linux/amd64,linux/arm64,linux/arm/v7 -t sashas777/magento-php:8.2-cli --push -f php/8.2-cli/Dockerfile .
-docker buildx build --platform linux/amd64,linux/arm64 -t sashas777/magento-php:8.3-cli --push -f php/8.3-cli/Dockerfile .
+docker buildx build --platform linux/amd64,linux/arm64,linux/arm/v7 -t sashas777/magento-php:8.3-cli --push -f php/8.3-cli/Dockerfile .
 ```
 
 ## PHP FPM
 ```shell
-docker buildx build --platform linux/amd64,linux/arm64 -t sashas777/magento-php:8.2-fpm --push -f php/8.2-fpm/Dockerfile .
-docker buildx build --platform linux/amd64,linux/arm64 -t sashas777/magento-php:8.3-fpm --push -f php/8.3-fpm/Dockerfile .
+docker buildx build --platform linux/amd64,linux/arm64,linux/arm/v7 -t sashas777/magento-php:8.2-fpm --push -f php/8.2-fpm/Dockerfile .
+docker buildx build --platform linux/amd64,linux/arm64,linux/arm/v7 -t sashas777/magento-php:8.3-fpm --push -f php/8.3-fpm/Dockerfile .
 ```
 
 ## Nginx
@@ -94,11 +105,7 @@ docker buildx build --platform linux/amd64,linux/arm64 -t sashas777/magento-ngin
 
 ## ElasticSearch
 ```shell
-docker buildx build --platform linux/amd64,linux/arm64 -t sashas777/magento-elasticsearch:8.5.3 --push -f elasticsearch/8.5.3/Dockerfile .
-docker buildx build --platform linux/amd64,linux/arm64 -t sashas777/magento-elasticsearch:8.4.3 --push -f elasticsearch/8.4.3/Dockerfile .
-docker buildx build --platform linux/amd64,linux/arm64 -t sashas777/magento-elasticsearch:7.17.10 --push -f elasticsearch/7.17.10/Dockerfile .
-docker buildx build --platform linux/amd64,linux/arm64 -t sashas777/magento-elasticsearch:7.16.3 --push -f elasticsearch/7.16.3/Dockerfile .
-docker buildx build --platform linux/amd64,linux/arm64 -t sashas777/magento-elasticsearch:7.9.3 --push -f elasticsearch/7.9.3/Dockerfile .
+docker buildx build --platform linux/amd64,linux/arm64 -t sashas777/magento-elasticsearch:8.11.4 --push -f elasticsearch/8.11/Dockerfile .
 ```
 
 ## Varnish

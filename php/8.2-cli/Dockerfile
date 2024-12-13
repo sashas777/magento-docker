@@ -12,7 +12,35 @@ RUN curl -L https://packages.blackfire.io/gpg.key | dd of=/usr/share/keyrings/bl
 
 # Install dependencies
 RUN apt-get update \
-  && apt-get install -y \
+  && if [ ${TARGETARCH} = "arm" ]; then apt-get install -y \
+    software-properties-common \
+    sudo \
+    gpg \
+    wget \
+    libfreetype6-dev \
+    libicu-dev \
+    libjpeg62-turbo-dev \
+    libmcrypt-dev \
+    libpng-dev \
+    libxslt1-dev \
+    libzip-dev \
+    cron \
+    mariadb-client \
+    git \
+    redis-tools \
+    nano \
+    curl \
+    jq \
+    ca-certificates \
+    libonig-dev \
+    libmagickwand-dev \
+    nodejs \
+    ssh \
+    openconnect \
+    msmtp \
+    librabbitmq-dev \
+    unzip --no-install-recommends; \
+    else apt-get install -y \
     software-properties-common \
     sudo \
     gpg \
@@ -41,7 +69,8 @@ RUN apt-get update \
     openconnect \
     msmtp \
     librabbitmq-dev \
-    unzip --no-install-recommends \
+    unzip --no-install-recommends; \
+    fi \
     && rm -rf /var/lib/apt/lists/*
 
 # Configure the gd library
@@ -56,12 +85,25 @@ RUN docker-php-ext-enable imagick amqp
 RUN if [ ${TARGETARCH} = "x86_64" ]; then file="loaders.linux-x86_64.tar.gz"; ext=".lin"; fi \
     && if [ ${TARGETARCH} = "amd64" ]; then file="loaders.linux-x86_64.tar.gz"; ext=".lin"; fi \
     && if [ ${TARGETARCH} = "aarch64" ]; then file="loaders.linux-aarch64.tar.gz"; ext=".lin"; fi \
+    && if [ ${TARGETARCH} = "arm" ]; then file="loaders.linux-armhf.tar.gz"; ext=".lin"; fi \
     && if [ ${TARGETARCH} = "arm64" ]; then file="loaders.macosx-arm64.tar.gz"; ext=".dar"; fi \
     && mkdir -p /tmp/sourceguardian && cd /tmp/sourceguardian \
     && curl -Os https://www.sourceguardian.com/loaders/download/${file} && tar xzf ${file} \
     && cp ixed.${PHP_SHORT_VERSION}${ext} "$(php -i | grep '^extension_dir =' | cut -d' ' -f3)/sourceguardian.so" \
     && echo "extension=sourceguardian.so" > /usr/local/etc/php/conf.d/zz-sourceguardian.ini \
     && rm -rf /tmp/sourceguardian
+
+#ionCube
+RUN if [ ${TARGETARCH} = "x86_64" ]; then file="ioncube_loaders_lin_x86-64.tar.gz"; ext="lin"; fi \
+    && if [ ${TARGETARCH} = "amd64" ]; then file="ioncube_loaders_lin_x86-64.tar.gz"; ext="lin"; fi \
+    && if [ ${TARGETARCH} = "aarch64" ]; then file="ioncube_loaders_lin_aarch64.tar.gz"; ext="lin"; fi \
+    && if [ ${TARGETARCH} = "arm" ]; then file="ioncube_loaders_lin_armv7l.tar.gz"; ext="lin"; fi \
+    && if [ ${TARGETARCH} = "arm64" ]; then file="ioncube_loaders_dar_arm64.tar.gz"; ext="dar"; fi \
+    && mkdir -p /tmp/ioncube && cd /tmp/ioncube \
+    && curl -Os https://downloads.ioncube.com/loader_downloads/${file} && tar xzf ${file} \
+    && cp ioncube/ioncube_loader_${ext}_${PHP_SHORT_VERSION}.so "$(php -i | grep '^extension_dir =' | cut -d' ' -f3)/ioncube.so" \
+    && echo "zend_extension=ioncube.so" > /usr/local/etc/php/conf.d/zz-ioncube.ini \
+    && rm -rf /tmp/ioncube
 
 #NVM
 RUN mkdir -p /var/www/.nvm  && export NVM_DIR="/var/www/.nvm" \
@@ -91,7 +133,7 @@ VOLUME /var/www/composer/.composer/cache
 # Get composer installed to /usr/local/bin/composer
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer --2
 
-RUN groupadd -g 1000 www && useradd -g 1000 -u 1000 -d ${MAGENTO_ROOT} -s /bin/bash www
+RUN groupadd -g 1000 www && useradd -g 1000 -u 1000 -d /var/www/ -s /bin/bash www
 RUN echo '%www ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers && usermod -a -G www-data www && usermod -a -G www www-data && umask 002
 RUN chown www:www -R /var/www
 
@@ -103,3 +145,6 @@ ENTRYPOINT ["/docker-entrypoint.sh"]
 WORKDIR ${MAGENTO_ROOT}
 
 CMD ["bash"]
+
+# HEALTHCHECK
+#HEALTHCHECK --interval=5s --timeout=1s --retries=12 CMD ["/docker-healthcheck.sh"]

@@ -62,7 +62,7 @@ COPY php/shared/etc/php-fpm.conf /usr/local/etc/
 COPY php/shared/magento-vars.php /var/www/magento-vars.php
 COPY php/shared/op-exclude.txt /var/www/op-exclude.txt
 
-RUN groupadd -g 1000 www && useradd -g 1000 -u 1000 -d ${MAGENTO_ROOT} -s /bin/bash www
+RUN groupadd -g 1000 www && useradd -g 1000 -u 1000 -d /var/www/ -s /bin/bash www
 RUN echo '%www ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers && usermod -a -G www-data www && usermod -a -G www www-data && umask 002
 RUN chown www:www -R /var/www
 
@@ -74,5 +74,5 @@ WORKDIR ${MAGENTO_ROOT}
 
 CMD ["php-fpm", "-R"]
 
-#HEALTHCHECK --interval=5s --timeout=1s --retries=12 CMD ["/docker-healthcheck.sh"]
-# php-fpm -t
+# HEALTHCHECK
+#https://github.com/php/php-src/issues/10314

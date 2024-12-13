@@ -37,6 +37,7 @@ RUN docker-php-ext-enable imagick amqp
 #SourceGuardian
 RUN if [ ${TARGETARCH}= "x86_64" ]; then file="loaders.linux-x86_64.tar.gz"; ext=".lin"; fi \
     && if [ ${TARGETARCH} = "amd64" ]; then file="loaders.linux-x86_64.tar.gz"; ext=".lin"; fi \
+    && if [ ${TARGETARCH} = "arm" ]; then file="loaders.linux-armhf.tar.gz"; ext=".lin"; fi \
     && if [ ${TARGETARCH} = "aarch64" ]; then file="loaders.linux-aarch64.tar.gz"; ext=".lin"; fi \
     && if [ ${TARGETARCH} = "arm64" ]; then file="loaders.macosx-arm64.tar.gz"; ext=".dar"; fi \
     && mkdir -p /tmp/sourceguardian && cd /tmp/sourceguardian \
@@ -44,6 +45,18 @@ RUN if [ ${TARGETARCH}= "x86_64" ]; then file="loaders.linux-x86_64.tar.gz"; ext
     && cp ixed.${PHP_SHORT_VERSION}${ext} "$(php -i | grep '^extension_dir =' | cut -d' ' -f3)/sourceguardian.so" \
     && echo "extension=sourceguardian.so" > /usr/local/etc/php/conf.d/zz-sourceguardian.ini \
     && rm -rf /tmp/sourceguardian
+
+#ionCube
+RUN if [ ${TARGETARCH} = "x86_64" ]; then file="ioncube_loaders_lin_x86-64.tar.gz"; ext="lin"; fi \
+    && if [ ${TARGETARCH} = "amd64" ]; then file="ioncube_loaders_lin_x86-64.tar.gz"; ext="lin"; fi \
+    && if [ ${TARGETARCH} = "aarch64" ]; then file="ioncube_loaders_lin_aarch64.tar.gz"; ext="lin"; fi \
+    && if [ ${TARGETARCH} = "arm" ]; then file="ioncube_loaders_lin_armv7l.tar.gz"; ext="lin"; fi \
+    && if [ ${TARGETARCH} = "arm64" ]; then file="ioncube_loaders_dar_arm64.tar.gz"; ext="dar"; fi \
+    && mkdir -p /tmp/ioncube && cd /tmp/ioncube \
+    && curl -Os https://downloads.ioncube.com/loader_downloads/${file} && tar xzf ${file} \
+    && cp ioncube/ioncube_loader_${ext}_${PHP_SHORT_VERSION}.so "$(php -i | grep '^extension_dir =' | cut -d' ' -f3)/ioncube.so" \
+    && echo "zend_extension=ioncube.so" > /usr/local/etc/php/conf.d/zz-ioncube.ini \
+    && rm -rf /tmp/ioncube
 
 RUN mkdir /var/www/composer && chmod 777 -R  /var/www/composer
 

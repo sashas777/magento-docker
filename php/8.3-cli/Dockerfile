@@ -76,10 +76,17 @@ RUN apt-get update \
 # Configure the gd library
 RUN docker-php-ext-configure gd --with-freetype --with-jpeg
 
+# Workaround due imagemagic pecl issue
+RUN mkdir -p /tmp/imagemagic && cd /tmp/imagemagic \
+     && git clone https://github.com/Imagick/imagick . \
+     && pecl install package.xml \
+     && echo "extension=imagick" > /usr/local/etc/php/conf.d/zz-imagemagic.ini \
+     && rm -rf /tmp/imagemagic
+
 ## Install required PHP extensions
 RUN docker-php-ext-install dom gd intl mbstring pdo_mysql xsl zip soap bcmath pcntl sockets mysqli
-RUN pecl install -o -f amqp xdebug imagick
-RUN docker-php-ext-enable imagick amqp
+RUN pecl install -o -f amqp xdebug
+RUN docker-php-ext-enable amqp
 
 #SourceGuardian
 RUN if [ ${TARGETARCH} = "x86_64" ]; then file="loaders.linux-x86_64.tar.gz"; ext=".lin"; fi \

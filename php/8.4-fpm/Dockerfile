@@ -1,8 +1,8 @@
-FROM php:8.3-fpm
+FROM php:8.4-fpm
 
 ENV TZ=America/New_York
 ARG TARGETARCH
-ARG PHP_SHORT_VERSION=8.3
+ARG PHP_SHORT_VERSION=8.4
 RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 
 # Install dependencies

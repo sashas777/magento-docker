@@ -13,7 +13,6 @@ RUN curl -L https://packages.blackfire.io/gpg.key | dd of=/usr/share/keyrings/bl
 # Install dependencies
 RUN apt-get update \
   && if [ ${TARGETARCH} = "arm" ]; then apt-get install -y \
-    software-properties-common \
     sudo \
     gpg \
     wget \
@@ -41,7 +40,6 @@ RUN apt-get update \
     librabbitmq-dev \
     unzip --no-install-recommends; \
     else apt-get install -y \
-    software-properties-common \
     sudo \
     gpg \
     wget \
@@ -84,7 +82,7 @@ RUN mkdir -p /tmp/imagemagic && cd /tmp/imagemagic \
      && rm -rf /tmp/imagemagic
 
 ## Install required PHP extensions
-RUN docker-php-ext-install dom gd intl mbstring pdo_mysql xsl zip soap bcmath pcntl sockets mysqli
+RUN docker-php-ext-install dom gd intl mbstring pdo_mysql xsl zip soap bcmath pcntl sockets mysqli ftp
 RUN pecl install -o -f amqp xdebug
 RUN docker-php-ext-enable amqp
 
@@ -109,7 +107,7 @@ RUN if [ ${TARGETARCH} = "x86_64" ]; then file="ioncube_loaders_lin_x86-64.tar.g
     && mkdir -p /tmp/ioncube && cd /tmp/ioncube \
     && curl -Os https://downloads.ioncube.com/loader_downloads/${file} && tar xzf ${file} \
     && cp ioncube/ioncube_loader_${ext}_${PHP_SHORT_VERSION}.so "$(php -i | grep '^extension_dir =' | cut -d' ' -f3)/ioncube.so" \
-    && echo "zend_extension=ioncube.so" > /usr/local/etc/php/conf.d/zz-ioncube.ini \
+    && echo "zend_extension=ioncube.so" > /usr/local/etc/php/conf.d/0zz-ioncube.ini \
     && rm -rf /tmp/ioncube
 
 #NVM
@@ -120,14 +118,14 @@ RUN mkdir -p /var/www/.nvm  && export NVM_DIR="/var/www/.nvm" \
 
 RUN mkdir /var/www/composer && chmod 777 -R  /var/www/composer
 
-ENV PHP_ENABLE_XDEBUG false
-ENV MAGENTO_ROOT /var/www/magento
-ENV DEBUG false
-ENV COMPOSER_ALLOW_SUPERUSER 1
-ENV PHP_IDE_CONFIG serverName=magento
-ENV COMPOSER_HOME /var/www/composer
-ENV UPLOAD_MAX_FILESIZE 64M
-ENV NVM_DIR /var/www/.nvm;
+ENV PHP_ENABLE_XDEBUG=false
+ENV MAGENTO_ROOT=/var/www/magento
+ENV DEBUG=false
+ENV COMPOSER_ALLOW_SUPERUSER=1
+ENV PHP_IDE_CONFIG="serverName=magento"
+ENV COMPOSER_HOME=/var/www/composer
+ENV UPLOAD_MAX_FILESIZE=64M
+ENV NVM_DIR=/var/www/.nvm;
 
 ADD php/shared/etc/php-xdebug.ini /usr/local/etc/php/conf.d/zz-xdebug-settings.ini
 ADD php/shared/etc/mail.ini /usr/local/etc/php/conf.d/zz-mail.ini

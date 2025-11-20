@@ -21,6 +21,7 @@ To make things even easier, we’ve included a CLI interface for quickly creatin
 
 | Adobe Commerce Version | PHP      | Elasticsearch | OpenSearch | nginx      | Redis         | Varnish            |
 |------------------------|----------|---------------|------------|------------|---------------|--------------------|
+| 2.4.8.x                | 8.4, 8.3 | 8.11          | 3          | 1.28       | 7.2           | 7.7                | 
 | 2.4.7.x                | 8.3, 8.2 | 8.11          | 2.12       | 1.24       | 7.2           | 7.5                | 
 | 2.4.6.x                | 8.2, 8.1 | 8.11, 7.17    | 2.12, 2.5  | 1.24, 1.22 | 7.2, 7.0      | 7.5, 7.3, 7.1      | 
 | 2.4.5.x                | 8.1      | 7.17          | 1.3        | 1.24       | 7.2, 7.0, 6.2 | 7.5, 7.3, 7.1, 7.0 | 
@@ -43,8 +44,9 @@ If you're interested in having a specific version updated, feel free to contact 
 | php:7.3               | Nov 28, 2020 | Inactive      |
 | php:7.4               | Nov 28, 2022 | Inactive      |
 | php:8.1               | Nov 25, 2024 | Inactive      |
-| php:8.2               | Dec 8, 2024  | Active        |
+| php:8.2               | Dec 8, 2024  | Inactive      |
 | php:8.3               | Nov 23, 2026 | Active        |
+| php:8.4               | Dec 31, 2028 | Active        |
 | php:arm64v8           | N/A          | Inactive      |
 | elasticsearch:1.7     | Jan 16, 2017 | Inactive      |
 | elasticsearch:2.4     | Apr 28, 2017 | Inactive      |
@@ -92,14 +94,14 @@ EOL Sources:
  
 ## PHP CLI
 ```shell
-docker buildx build --platform linux/amd64,linux/arm64,linux/arm/v7 -t sashas777/magento-php:8.2-cli --push -f php/8.2-cli/Dockerfile .
 docker buildx build --platform linux/amd64,linux/arm64,linux/arm/v7 -t sashas777/magento-php:8.3-cli --push -f php/8.3-cli/Dockerfile .
+docker buildx build --platform linux/amd64,linux/arm64,linux/arm/v7 -t sashas777/magento-php:8.4-cli --push -f php/8.4-cli/Dockerfile .
 ```
 
 ## PHP FPM
 ```shell
-docker buildx build --platform linux/amd64,linux/arm64,linux/arm/v7 -t sashas777/magento-php:8.2-fpm --push -f php/8.2-fpm/Dockerfile .
 docker buildx build --platform linux/amd64,linux/arm64,linux/arm/v7 -t sashas777/magento-php:8.3-fpm --push -f php/8.3-fpm/Dockerfile .
+docker buildx build --platform linux/amd64,linux/arm64,linux/arm/v7 -t sashas777/magento-php:8.4-fpm --push -f php/8.4-fpm/Dockerfile .
 ```
 
 ## Nginx

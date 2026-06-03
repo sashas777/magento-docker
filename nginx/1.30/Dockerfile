@@ -1,13 +1,13 @@
-FROM nginx:latest
+FROM nginx:1.30
 
 ENV TZ=America/New_York
 RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 
 RUN apt-get update \
   && apt-get install -y \
-  openssl \
-  net-tools \
-  nano
+    openssl \
+    net-tools \
+    && rm -rf /var/lib/apt/lists/*
 
 ENV UPLOAD_MAX_FILESIZE=64M
 ENV FPM_HOST=fpm
@@ -30,9 +30,9 @@ COPY nginx/shared/docker-healthcheck.sh /docker-healthcheck.sh
 RUN mkdir /etc/nginx/ssl
 
 RUN openssl req -x509 -nodes -days 730 \
-  -subj  "/C=US/ST=TX/L=New York/O=TheSGroup/OU=Magento Docker/CN=sashas.org" \
-  -newkey rsa:2048 -keyout /etc/nginx/ssl/magento.key \
-  -out /etc/nginx/ssl/magento.crt;
+    -subj  "/C=US/ST=TX/L=New York/O=TheSGroup/OU=Magento Docker/CN=sashas.org" \
+    -newkey rsa:2048 -keyout /etc/nginx/ssl/magento.key \
+    -out /etc/nginx/ssl/magento.crt;
 
 EXPOSE 443
 
@@ -42,4 +42,5 @@ ENTRYPOINT ["/docker-entrypoint.sh"]
 
 CMD ["nginx", "-g", "daemon off;"]
 
+# HEALTHCHECK
 HEALTHCHECK --interval=5s --timeout=1s --retries=12 CMD ["/docker-healthcheck.sh"]

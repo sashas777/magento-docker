@@ -16,7 +16,7 @@ CRON_LOG=/var/log/cron.log
 sudo touch $CRON_LOG
 
 # Substitute in php.ini values
-[ ! -z "${TZ}" ] && export TZ_ESCAPED=$(echo $TZ | sed 's/\//\\\//g') && sudo sed -i "s/!TZ!/${TZ_ESCAPED}/" /usr/local/etc/php/conf.d/zz-magento.ini
+[ ! -z "${TZ}" ] && export TZ_ESCAPED=$(echo $TZ | sed 's/\//\\\//g') && sudo sed -i "s/^\(date.timezone\s*=\s*\)[^;]*/\1${TZ_ESCAPED} /" /usr/local/etc/php/conf.d/zz-magento.ini
 
 [ "$PHP_ENABLE_XDEBUG" = "true" ] && \
     sudo -E docker-php-ext-enable xdebug && \

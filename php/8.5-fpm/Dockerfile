@@ -1,40 +1,28 @@
-FROM php:8.4-fpm
+FROM php:8.5-fpm
 
 ENV TZ=America/New_York
 ARG TARGETARCH
-ARG PHP_SHORT_VERSION=8.4
+ARG PHP_SHORT_VERSION=8.5
 RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 
-# Install dependencies
+# Install dependencies (only runtime tools, no compilation headers needed)
 RUN apt-get update \
-    && apt-get install -y \
+  && apt-get install -y \
     sudo \
-    libfreetype6-dev \
-    libicu-dev \
-    libjpeg62-turbo-dev \
-    libmcrypt-dev \
-    libpng-dev \
-    libzip-dev \
-    libxslt1-dev \
     curl \
     nano \
     ca-certificates \
-    libmagickwand-dev \
-    librabbitmq-dev \
-    msmtp \
-    libonig-dev --no-install-recommends \
-    && rm -rf /var/lib/apt/lists/*
+    msmtp --no-install-recommends \
+  && rm -rf /var/lib/apt/lists/*
 
-# Configure the gd library
-RUN docker-php-ext-configure gd --with-freetype --with-jpeg
+# Add the PHP extension installer script
+ADD --chmod=0755 https://github.com/mlocati/docker-php-extension-installer/releases/latest/download/install-php-extensions /usr/local/bin/
 
-## Install required PHP extensions
-RUN docker-php-ext-install dom gd intl mbstring pdo_mysql xsl zip soap bcmath pcntl sockets mysqli ftp
-RUN pecl install -o -f amqp xdebug imagick
-RUN docker-php-ext-enable imagick amqp
+# Install and configure all required PHP extensions (and automatically clean up build tools)
+RUN install-php-extensions gd intl pdo_mysql xsl zip soap bcmath pcntl sockets mysqli ftp amqp xdebug imagick
 
 #SourceGuardian
-RUN if [ ${TARGETARCH}= "x86_64" ]; then file="loaders.linux-x86_64.tar.gz"; ext=".lin"; fi \
+RUN if [ ${TARGETARCH} = "x86_64" ]; then file="loaders.linux-x86_64.tar.gz"; ext=".lin"; fi \
     && if [ ${TARGETARCH} = "amd64" ]; then file="loaders.linux-x86_64.tar.gz"; ext=".lin"; fi \
     && if [ ${TARGETARCH} = "aarch64" ]; then file="loaders.linux-aarch64.tar.gz"; ext=".lin"; fi \
     && if [ ${TARGETARCH} = "arm" ]; then file="loaders.linux-armhf.tar.gz"; ext=".lin"; fi \
@@ -50,7 +38,7 @@ RUN if [ ${TARGETARCH} = "x86_64" ]; then file="ioncube_loaders_lin_x86-64.tar.g
     && if [ ${TARGETARCH} = "amd64" ]; then file="ioncube_loaders_lin_x86-64.tar.gz"; ext="lin"; fi \
     && if [ ${TARGETARCH} = "aarch64" ]; then file="ioncube_loaders_lin_aarch64.tar.gz"; ext="lin"; fi \
     && if [ ${TARGETARCH} = "arm" ]; then file="ioncube_loaders_lin_armv7l.tar.gz"; ext="lin"; fi \
-    && if [ ${TARGETARCH} = "arm64" ]; then file="ioncube_loaders_dar_arm64.tar.gz"; ext="dar"; fi \
+    && if [ ${TARGETARCH} = "arm64" ]; then file="ioncube_loaders_lin_aarch64.tar.gz"; ext="lin"; fi \
     && mkdir -p /tmp/ioncube && cd /tmp/ioncube \
     && curl -Os https://downloads.ioncube.com/loader_downloads/${file} && tar xzf ${file} \
     && cp ioncube/ioncube_loader_${ext}_${PHP_SHORT_VERSION}.so "$(php -i | grep '^extension_dir =' | cut -d' ' -f3)/ioncube.so" \
@@ -78,7 +66,9 @@ RUN groupadd -g 1000 www && useradd -g 1000 -u 1000 -d /var/www/ -s /bin/bash ww
 RUN echo '%www ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers && usermod -a -G www-data www && usermod -a -G www www-data && umask 002
 RUN chown www:www -R /var/www
 
+COPY php/shared/fpm-docker-healthcheck.sh /docker-healthcheck.sh
 RUN ["chmod", "+x", "/docker-entrypoint.sh"]
+RUN ["chmod", "+x", "/docker-healthcheck.sh"]
 
 ENTRYPOINT ["/docker-entrypoint.sh"]
 
@@ -87,4 +77,4 @@ WORKDIR ${MAGENTO_ROOT}
 CMD ["php-fpm", "-R"]
 
 # HEALTHCHECK
-#https://github.com/php/php-src/issues/10314
+HEALTHCHECK --interval=10s --timeout=3s --retries=3 CMD ["/docker-healthcheck.sh"]

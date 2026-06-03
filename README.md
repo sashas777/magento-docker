@@ -19,15 +19,16 @@ To make things even easier, we’ve included a CLI interface for quickly creatin
 
 ## Adobe Commerce Support
 
-| Adobe Commerce Version | PHP      | Elasticsearch | OpenSearch | nginx      | Redis         | Varnish            |
-|------------------------|----------|---------------|------------|------------|---------------|--------------------|
-| 2.4.8.x                | 8.4, 8.3 | 8.11          | 3          | 1.28       | 7.2           | 7.7                | 
-| 2.4.7.x                | 8.3, 8.2 | 8.11          | 2.12       | 1.24       | 7.2           | 7.5                | 
-| 2.4.6.x                | 8.2, 8.1 | 8.11, 7.17    | 2.12, 2.5  | 1.24, 1.22 | 7.2, 7.0      | 7.5, 7.3, 7.1      | 
-| 2.4.5.x                | 8.1      | 7.17          | 1.3        | 1.24       | 7.2, 7.0, 6.2 | 7.5, 7.3, 7.1, 7.0 | 
-| 2.4.4.x                | 8.1      | 7.17, 7.16    | 1.3, 1.2   | 1.24, 1.22 | 7.2, 7.0, 6.2 | 7.5, 7.3, 7.1, 7.0 | 
-| 2.4.3.x                | 7.4      | 7.16          | 1.2        | 1.18       | 6.0           | 6.5                | 
-| 2.4.2.x                | 7.4      | 7.9           | N/A        | 1.18       | 6.0           | 6.4                | 
+| Adobe Commerce Version | PHP      | Elasticsearch | OpenSearch | nginx      | Redis / Valkey | Varnish            | RabbitMQ           | ActiveMQ Artemis   |
+|------------------------|----------|---------------|------------|------------|----------------|--------------------|--------------------|--------------------|
+| 2.4.9.x                | 8.5, 8.4, 8.3 | 8.11          | 3          | 1.30       | 9.0, 7.2       | 8.0                | 4.2                | 2                  |
+| 2.4.8.x                | 8.4, 8.3 | 8.11          | 3          | 1.28       | 7.2           | 7.7                | -                  | -                  |
+| 2.4.7.x                | 8.3, 8.2 | 8.11          | 2.12       | 1.24       | 7.2           | 7.5                | -                  | -                  |
+| 2.4.6.x                | 8.2, 8.1 | 8.11, 7.17    | 2.12, 2.5  | 1.24, 1.22 | 7.2, 7.0      | 7.5, 7.3, 7.1      | -                  | -                  |
+| 2.4.5.x                | 8.1      | 7.17          | 1.3        | 1.24       | 7.2, 7.0, 6.2 | 7.5, 7.3, 7.1, 7.0 | -                  | -                  |
+| 2.4.4.x                | 8.1      | 7.17, 7.16    | 1.3, 1.2   | 1.24, 1.22 | 7.2, 7.0, 6.2 | 7.5, 7.3, 7.1, 7.0 | -                  | -                  |
+| 2.4.3.x                | 7.4      | 7.16          | 1.2        | 1.18       | 6.0           | 6.5                | -                  | -                  |
+| 2.4.2.x                | 7.4      | 7.9           | N/A        | 1.18       | 6.0           | 6.4                | -                  | -                  | 
 
 Source: [Adobe Commerce System requirements](https://experienceleague.adobe.com/docs/commerce-operations/installation-guide/system-requirements.html)
 
@@ -45,8 +46,9 @@ If you're interested in having a specific version updated, feel free to contact 
 | php:7.4               | Nov 28, 2022 | Inactive      |
 | php:8.1               | Nov 25, 2024 | Inactive      |
 | php:8.2               | Dec 8, 2024  | Inactive      |
-| php:8.3               | Nov 23, 2026 | Active        |
+| php:8.3               | Nov 23, 2026 | Inactive      |
 | php:8.4               | Dec 31, 2028 | Active        |
+| php:8.5               | Dec 31, 2029 | Active        |
 | php:arm64v8           | N/A          | Inactive      |
 | elasticsearch:1.7     | Jan 16, 2017 | Inactive      |
 | elasticsearch:2.4     | Apr 28, 2017 | Inactive      |
@@ -59,26 +61,33 @@ If you're interested in having a specific version updated, feel free to contact 
 | elasticsearch:7.17.10 | Aug 1, 2023  | Inactive      |
 | elasticsearch:8.4.3   | Aug 10, 2024 | Inactive      |
 | elasticsearch:8.5.3   | Aug 10, 2024 | Inactive      |
-| elasticsearch:8.11.4  | Aug 10, 2024 | Active        |
+| elasticsearch:8.11.4  | Aug 10, 2024 | Inactive      |
+| opensearch:3.0        | N/A          | Active        |
 | nginx:1.9             | 2015         | Inactive      |
 | nginx:1.21            | 2021         | Inactive      |
 | nginx:1.22            | Apr 11, 2023 | Inactive      |
-| nginx:1.24            | Apr 23, 2024 | Active        |
+| nginx:1.24            | Apr 23, 2024 | Inactive      |
+| nginx:1.30            | N/A          | Active        |
 | nginx:latest          | N/A          | Active        |
 | nginx:arm64v8         | N/A          | Inactive      |
 | redis:5.0             | Dec 31, 2019 | Inactive      |
 | redis:6.2             | Feb 28, 2025 | Inactive      |
 | redis:7.0             | N/A          | Inactive      |
-| redis:7.2             | Feb, 2026    | Active        |
+| redis:7.2             | Feb, 2026    | Inactive      |
+| valkey:9.0            | N/A          | Active        |
+| rabbitmq:4.2          | N/A          | Active        |
+| activemq-artemis:2    | N/A          | Active        |
 | varnish:6.5           | Sep 15, 2021 | Inactive      |
 | varnish:7.0           | Sep 15, 2022 | Inactive      |
 | varnish:7.1           | Mar 15, 2023 | Inactive      |
-| varnish:7.5           | Mar 15, 2025 | Active        |
+| varnish:7.5           | Mar 15, 2025 | Inactive      |
+| varnish:8.0           | N/A          | Active        |
 
 EOL Sources:
 - [Elasticsearch](https://www.elastic.co/support/eol)
 - [Redis](https://redis.io/docs/latest/operate/rs/installing-upgrading/product-lifecycle/)
 - [Varnish](https://varnish-cache.org/releases/)
+- [RabbitMQ](https://www.rabbitmq.com/support.html)
 
 # Related Resources
 
@@ -94,19 +103,20 @@ EOL Sources:
  
 ## PHP CLI
 ```shell
-docker buildx build --platform linux/amd64,linux/arm64,linux/arm/v7 -t sashas777/magento-php:8.3-cli --push -f php/8.3-cli/Dockerfile .
 docker buildx build --platform linux/amd64,linux/arm64,linux/arm/v7 -t sashas777/magento-php:8.4-cli --push -f php/8.4-cli/Dockerfile .
+docker buildx build --platform linux/amd64,linux/arm64 -t sashas777/magento-php:8.5-cli --push -f php/8.5-cli/Dockerfile .
 ```
 
 ## PHP FPM
 ```shell
-docker buildx build --platform linux/amd64,linux/arm64,linux/arm/v7 -t sashas777/magento-php:8.3-fpm --push -f php/8.3-fpm/Dockerfile .
 docker buildx build --platform linux/amd64,linux/arm64,linux/arm/v7 -t sashas777/magento-php:8.4-fpm --push -f php/8.4-fpm/Dockerfile .
+docker buildx build --platform linux/amd64,linux/arm64 -t sashas777/magento-php:8.5-fpm --push -f php/8.5-fpm/Dockerfile .
 ```
 
 ## Nginx
 ```shell
 docker buildx build --platform linux/amd64,linux/arm64,linux/arm/v7 -t sashas777/magento-nginx:1.24 --push -f  nginx/1.24/Dockerfile .
+docker buildx build --platform linux/amd64,linux/arm64,linux/arm/v7 -t sashas777/magento-nginx:1.30 --push -f  nginx/1.30/Dockerfile .
 docker buildx build --platform linux/amd64,linux/arm64,linux/arm/v7 -t sashas777/magento-nginx:latest --push -f  nginx/latest/Dockerfile .
 ```
 
@@ -115,12 +125,33 @@ docker buildx build --platform linux/amd64,linux/arm64,linux/arm/v7 -t sashas777
 docker buildx build --platform linux/amd64,linux/arm64 -t sashas777/magento-elasticsearch:8.11.4 --push -f elasticsearch/8.11/Dockerfile .
 ```
 
+## OpenSearch
+```shell
+docker buildx build --platform linux/amd64,linux/arm64 -t sashas777/magento-opensearch:3.0 --push -f opensearch/3.0/Dockerfile .
+```
+
 ## Varnish
 ```shell
 docker buildx build --platform linux/amd64,linux/arm64,linux/arm/v7 -t sashas777/magento-varnish:7.5 --push -f varnish/7.5/Dockerfile .
+docker buildx build --platform linux/amd64,linux/arm64 -t sashas777/magento-varnish:8.0 --push -f varnish/8.0/Dockerfile .
 ```
 
 ## Redis
 ```shell
 docker buildx build --platform linux/amd64,linux/arm64,linux/arm/v7 -t sashas777/magento-redis:7.2 --push -f redis/7.2/Dockerfile .
+```
+
+## Valkey
+```shell
+docker buildx build --platform linux/amd64,linux/arm64 -t sashas777/magento-valkey:9.0 --push -f valkey/9.0/Dockerfile .
+```
+
+## RabbitMQ
+```shell
+docker buildx build --platform linux/amd64,linux/arm64,linux/arm/v7 -t sashas777/magento-rabbitmq:4.2 --push -f rabbitmq/4.2/Dockerfile .
+```
+
+## ActiveMQ Artemis
+```shell
+docker buildx build --platform linux/amd64,linux/arm64 -t sashas777/magento-activemq-artemis:2 --push -f activemq-artemis/2/Dockerfile .
 ```

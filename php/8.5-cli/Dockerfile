@@ -1,8 +1,8 @@
-FROM php:8.2-cli
+FROM php:8.5-cli
 
 ENV TZ=America/New_York
 ARG TARGETARCH
-ARG PHP_SHORT_VERSION=8.2
+ARG PHP_SHORT_VERSION=8.5
 RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone \
     && touch /var/www/.bashrc
 
@@ -10,20 +10,12 @@ RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone \
 RUN curl -L https://packages.blackfire.io/gpg.key | dd of=/usr/share/keyrings/blackfire-archive-keyring.asc \
     && echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/blackfire-archive-keyring.asc] http://packages.blackfire.io/debian any main" | tee /etc/apt/sources.list.d/blackfire.list
 
-# Install dependencies
+# Install runtime dependencies (no compilation headers needed here)
 RUN apt-get update \
     && if [ ${TARGETARCH} = "arm" ]; then apt-get install -y \
-    software-properties-common \
     sudo \
     gpg \
     wget \
-    libfreetype6-dev \
-    libicu-dev \
-    libjpeg62-turbo-dev \
-    libmcrypt-dev \
-    libpng-dev \
-    libxslt1-dev \
-    libzip-dev \
     cron \
     mariadb-client \
     git \
@@ -32,28 +24,17 @@ RUN apt-get update \
     curl \
     jq \
     ca-certificates \
-    libonig-dev \
-    libmagickwand-dev \
     nodejs \
     ssh \
     openconnect \
     msmtp \
-    librabbitmq-dev \
     unzip --no-install-recommends; \
     else apt-get install -y \
-    software-properties-common \
     sudo \
     gpg \
     wget \
     blackfire-php \
     blackfire \
-    libfreetype6-dev \
-    libicu-dev \
-    libjpeg62-turbo-dev \
-    libmcrypt-dev \
-    libpng-dev \
-    libxslt1-dev \
-    libzip-dev \
     cron \
     mariadb-client \
     git \
@@ -62,24 +43,19 @@ RUN apt-get update \
     curl \
     jq \
     ca-certificates \
-    libonig-dev \
-    libmagickwand-dev \
     nodejs \
     ssh \
     openconnect \
     msmtp \
-    librabbitmq-dev \
     unzip --no-install-recommends; \
     fi \
     && rm -rf /var/lib/apt/lists/*
 
-# Configure the gd library
-RUN docker-php-ext-configure gd --with-freetype --with-jpeg
+# Add the PHP extension installer script
+ADD --chmod=0755 https://github.com/mlocati/docker-php-extension-installer/releases/latest/download/install-php-extensions /usr/local/bin/
 
-## Install required PHP extensions
-RUN docker-php-ext-install dom gd intl mbstring pdo_mysql xsl zip soap bcmath pcntl sockets mysqli
-RUN pecl install -o -f amqp xdebug imagick
-RUN docker-php-ext-enable imagick amqp
+# Install and configure all required PHP extensions (and automatically clean up build tools)
+RUN install-php-extensions gd intl pdo_mysql xsl zip soap bcmath pcntl sockets mysqli ftp amqp xdebug imagick
 
 #SourceGuardian
 RUN if [ ${TARGETARCH} = "x86_64" ]; then file="loaders.linux-x86_64.tar.gz"; ext=".lin"; fi \
@@ -98,11 +74,11 @@ RUN if [ ${TARGETARCH} = "x86_64" ]; then file="ioncube_loaders_lin_x86-64.tar.g
     && if [ ${TARGETARCH} = "amd64" ]; then file="ioncube_loaders_lin_x86-64.tar.gz"; ext="lin"; fi \
     && if [ ${TARGETARCH} = "aarch64" ]; then file="ioncube_loaders_lin_aarch64.tar.gz"; ext="lin"; fi \
     && if [ ${TARGETARCH} = "arm" ]; then file="ioncube_loaders_lin_armv7l.tar.gz"; ext="lin"; fi \
-    && if [ ${TARGETARCH} = "arm64" ]; then file="ioncube_loaders_dar_arm64.tar.gz"; ext="dar"; fi \
+    && if [ ${TARGETARCH} = "arm64" ]; then file="ioncube_loaders_lin_aarch64.tar.gz"; ext="lin"; fi \
     && mkdir -p /tmp/ioncube && cd /tmp/ioncube \
     && curl -Os https://downloads.ioncube.com/loader_downloads/${file} && tar xzf ${file} \
     && cp ioncube/ioncube_loader_${ext}_${PHP_SHORT_VERSION}.so "$(php -i | grep '^extension_dir =' | cut -d' ' -f3)/ioncube.so" \
-    && echo "zend_extension=ioncube.so" > /usr/local/etc/php/conf.d/zz-ioncube.ini \
+    && echo "zend_extension=ioncube.so" > /usr/local/etc/php/conf.d/0zz-ioncube.ini \
     && rm -rf /tmp/ioncube
 
 #NVM
@@ -113,14 +89,14 @@ RUN mkdir -p /var/www/.nvm  && export NVM_DIR="/var/www/.nvm" \
 
 RUN mkdir /var/www/composer && chmod 777 -R  /var/www/composer
 
-ENV PHP_ENABLE_XDEBUG false
-ENV MAGENTO_ROOT /var/www/magento
-ENV DEBUG false
-ENV COMPOSER_ALLOW_SUPERUSER 1
-ENV PHP_IDE_CONFIG serverName=magento
-ENV COMPOSER_HOME /var/www/composer
-ENV UPLOAD_MAX_FILESIZE 64M
-ENV NVM_DIR /var/www/.nvm;
+ENV PHP_ENABLE_XDEBUG=false
+ENV MAGENTO_ROOT=/var/www/magento
+ENV DEBUG=false
+ENV COMPOSER_ALLOW_SUPERUSER=1
+ENV PHP_IDE_CONFIG="serverName=magento"
+ENV COMPOSER_HOME=/var/www/composer
+ENV UPLOAD_MAX_FILESIZE=64M
+ENV NVM_DIR=/var/www/.nvm;
 
 ADD php/shared/etc/php-xdebug.ini /usr/local/etc/php/conf.d/zz-xdebug-settings.ini
 ADD php/shared/etc/mail.ini /usr/local/etc/php/conf.d/zz-mail.ini
@@ -137,8 +113,10 @@ RUN groupadd -g 1000 www && useradd -g 1000 -u 1000 -d /var/www/ -s /bin/bash ww
 RUN echo '%www ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers && usermod -a -G www-data www && usermod -a -G www www-data && umask 002
 RUN chown www:www -R /var/www
 
+COPY php/shared/cli-docker-healthcheck.sh /docker-healthcheck.sh
 RUN ["chmod", "+x", "/docker-entrypoint.sh"]
 RUN ["chmod", "+x", "/usr/local/bin/run-cron"]
+RUN ["chmod", "+x", "/docker-healthcheck.sh"]
 
 ENTRYPOINT ["/docker-entrypoint.sh"]
 
@@ -147,4 +125,4 @@ WORKDIR ${MAGENTO_ROOT}
 CMD ["bash"]
 
 # HEALTHCHECK
-#HEALTHCHECK --interval=5s --timeout=1s --retries=12 CMD ["/docker-healthcheck.sh"]
+HEALTHCHECK --interval=10s --timeout=3s --retries=3 CMD ["/docker-healthcheck.sh"]

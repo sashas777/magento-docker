@@ -11,9 +11,9 @@ sudo chmod g+s $MAGENTO_ROOT
 sudo chown -R www:www /var/www/composer
 
 # Substitute in php.ini values
-[ ! -z "${PHP_MEMORY_LIMIT}" ] && sudo sed -i "s/!PHP_MEMORY_LIMIT!/${PHP_MEMORY_LIMIT}/" /usr/local/etc/php/conf.d/zz-magento.ini
-[ ! -z "${UPLOAD_MAX_FILESIZE}" ] && sudo sed -i "s/!UPLOAD_MAX_FILESIZE!/${UPLOAD_MAX_FILESIZE}/" /usr/local/etc/php/conf.d/zz-magento.ini
-[ ! -z "${TZ}" ] && export TZ_ESCAPED=$(echo $TZ | sed 's/\//\\\//g') && sudo sed -i "s/!TZ!/${TZ_ESCAPED}/" /usr/local/etc/php/conf.d/zz-magento.ini
+[ ! -z "${PHP_MEMORY_LIMIT}" ] && sudo sed -i "s/^\(memory_limit\s*=\s*\)[^;]*/\1${PHP_MEMORY_LIMIT} /" /usr/local/etc/php/conf.d/zz-magento.ini
+[ ! -z "${UPLOAD_MAX_FILESIZE}" ] && sudo sed -i "s/^\(upload_max_filesize\s*=\s*\)[^;]*/\1${UPLOAD_MAX_FILESIZE} /" /usr/local/etc/php/conf.d/zz-magento.ini
+[ ! -z "${TZ}" ] && export TZ_ESCAPED=$(echo $TZ | sed 's/\//\\\//g') && sudo sed -i "s/^\(date.timezone\s*=\s*\)[^;]*/\1${TZ_ESCAPED} /" /usr/local/etc/php/conf.d/zz-magento.ini
 
 [ "$PHP_ENABLE_XDEBUG" = "true" ] && \
     sudo -E docker-php-ext-enable xdebug && \

@@ -8,11 +8,11 @@ RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone \
 
 # Blackfire
 RUN curl -L https://packages.blackfire.io/gpg.key | dd of=/usr/share/keyrings/blackfire-archive-keyring.asc \
-  && echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/blackfire-archive-keyring.asc] http://packages.blackfire.io/debian any main" | tee /etc/apt/sources.list.d/blackfire.list
+    && echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/blackfire-archive-keyring.asc] http://packages.blackfire.io/debian any main" | tee /etc/apt/sources.list.d/blackfire.list
 
 # Install dependencies
 RUN apt-get update \
-  && if [ ${TARGETARCH} = "arm" ]; then apt-get install -y \
+    && if [ ${TARGETARCH} = "arm" ]; then apt-get install -y \
     sudo \
     gpg \
     wget \
@@ -76,10 +76,10 @@ RUN docker-php-ext-configure gd --with-freetype --with-jpeg
 
 # Workaround due imagemagic pecl issue
 RUN mkdir -p /tmp/imagemagic && cd /tmp/imagemagic \
-     && git clone https://github.com/Imagick/imagick . \
-     && pecl install package.xml \
-     && echo "extension=imagick" > /usr/local/etc/php/conf.d/zz-imagemagic.ini \
-     && rm -rf /tmp/imagemagic
+    && git clone https://github.com/Imagick/imagick . \
+    && pecl install package.xml \
+    && echo "extension=imagick" > /usr/local/etc/php/conf.d/zz-imagemagic.ini \
+    && rm -rf /tmp/imagemagic
 
 ## Install required PHP extensions
 RUN docker-php-ext-install dom gd intl mbstring pdo_mysql xsl zip soap bcmath pcntl sockets mysqli ftp

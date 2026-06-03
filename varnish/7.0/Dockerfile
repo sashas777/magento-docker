@@ -6,6 +6,6 @@ ENV VARNISHD_PARAMS -p default_ttl=3600 -p default_grace=3600 -p feature=+esi_ig
 ENV VARNISH_PORT 80
 ENV VARNISH_ADMIN_PORT 6082
 
-COPY varnish/shared/docker-healthcheck.sh /docker-healthcheck.sh
+COPY --chmod=0755 varnish/shared/docker-healthcheck.sh /docker-healthcheck.sh
 
 HEALTHCHECK --interval=5s --timeout=1s --retries=12 CMD ["/docker-healthcheck.sh"]

@@ -4,6 +4,7 @@ ENV TZ=America/New_York
 RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 
 RUN apt-get update \
+  && apt-get upgrade -y libssl3t64 openssl openssl-provider-legacy \
   && apt-get install -y \
     openssl \
     net-tools \

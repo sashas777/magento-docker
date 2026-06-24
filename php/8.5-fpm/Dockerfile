@@ -7,6 +7,7 @@ RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 
 # Install dependencies (only runtime tools, no compilation headers needed)
 RUN apt-get update \
+  && apt-get upgrade -y libssl3t64 openssl openssl-provider-legacy \
   && apt-get install -y \
     sudo \
     curl \

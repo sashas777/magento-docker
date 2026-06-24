@@ -63,6 +63,7 @@ If you're interested in having a specific version updated, feel free to contact 
 | elasticsearch:8.5.3   | Aug 10, 2024 | Inactive      |
 | elasticsearch:8.11.4  | Aug 10, 2024 | Inactive      |
 | opensearch:3.0        | N/A          | Active        |
+| opensearch:3.7        | N/A          | Active        |
 | nginx:1.9             | 2015         | Inactive      |
 | nginx:1.21            | 2021         | Inactive      |
 | nginx:1.22            | Apr 11, 2023 | Inactive      |
@@ -128,6 +129,7 @@ docker buildx build --platform linux/amd64,linux/arm64 -t sashas777/magento-elas
 ## OpenSearch
 ```shell
 docker buildx build --platform linux/amd64,linux/arm64 -t sashas777/magento-opensearch:3.0 --push -f opensearch/3.0/Dockerfile .
+docker buildx build --platform linux/amd64,linux/arm64 -t sashas777/magento-opensearch:3.7 --push -f opensearch/3.7/Dockerfile .
 ```
 
 ## Varnish

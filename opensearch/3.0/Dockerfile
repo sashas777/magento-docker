@@ -15,6 +15,7 @@ ENV OPENSEARCH_HOST=localhost
 ENV OPENSEARCH_PORT=9200
 
 USER root
+RUN dnf clean all && dnf update -y --releasever=latest
 ADD opensearch/shared/docker-healthcheck.sh /docker-healthcheck.sh
 RUN chmod +x /docker-healthcheck.sh
 USER opensearch

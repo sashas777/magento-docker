@@ -1,0 +1,13 @@
+{
+  "name": "magento-serverless-app-runner",
+  "version": "1.0.0",
+  "description": "Generic Node.js runner with prebuilt fastify, isolated-vm, ioredis, googleapis, and pino for Magento serverless-app",
+  "main": "src/index.js",
+  "dependencies": {
+    "fastify": "^4.28.1",
+    "googleapis": "^140.0.0",
+    "ioredis": "^5.4.1",
+    "isolated-vm": "^5.0.1",
+    "pino": "^9.2.0"
+  }
+}

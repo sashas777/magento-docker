@@ -157,3 +157,8 @@ docker buildx build --platform linux/amd64,linux/arm64,linux/arm/v7 -t sashas777
 ```shell
 docker buildx build --platform linux/amd64,linux/arm64 -t sashas777/magento-activemq-artemis:2 --push -f activemq-artemis/2/Dockerfile .
 ```
+
+## Serverless App Runner (NodeJS runner)
+```shell
+docker buildx build --platform linux/amd64,linux/arm64 -t sashas777/magento-serverless-app:latest --push -f serverless-app/Dockerfile .
+```

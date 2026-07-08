@@ -12,7 +12,7 @@ RUN curl -L https://packages.blackfire.io/gpg.key | dd of=/usr/share/keyrings/bl
 
 # Install runtime dependencies (no compilation headers needed here)
 RUN apt-get update \
-    && apt-get upgrade -y libssl3t64 openssl openssl-provider-legacy \
+    && apt-get upgrade -y libssl3t64 openssl openssl-provider-legacy libssh2-1t64 \
     && if [ ${TARGETARCH} = "arm" ]; then apt-get install -y \
     sudo \
     gpg \

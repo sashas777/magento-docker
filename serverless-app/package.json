@@ -4,6 +4,7 @@
   "description": "Generic Node.js runner with prebuilt fastify, isolated-vm, ioredis, googleapis, and pino for Magento serverless-app",
   "main": "src/index.js",
   "dependencies": {
+    "algoliasearch": "^5.54.0",
     "fastify": "^5.8.3",
     "googleapis": "^140.0.0",
     "ioredis": "^5.4.1",

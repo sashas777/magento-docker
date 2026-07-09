@@ -9,7 +9,7 @@ RUN npm install -g pnpm
 
 WORKDIR /app
 
-COPY serverless-app/package.json ./
+COPY serverless-app/package.json serverless-app/pnpm-lock.yaml* ./
 
 # Install and compile production dependencies
 RUN pnpm install --prod
@@ -23,8 +23,8 @@ ENV NODE_ENV=production
 WORKDIR /app
 
 # Copy package.json and the compiled node_modules from the builder stage
-COPY --from=builder /app/package.json ./
-COPY --from=builder /app/node_modules ./node_modules
+COPY --from=builder --chown=node:node /app/package.json ./
+COPY --from=builder --chown=node:node /app/node_modules ./node_modules
 
 # Run as the unprivileged non-root node user
 USER node

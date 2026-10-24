@@ -12,7 +12,7 @@ RUN curl -L https://packages.blackfire.io/gpg.key | dd of=/usr/share/keyrings/bl
 
 # Install runtime dependencies (no compilation headers needed here)
 RUN apt-get update \
-    && apt-get upgrade -y libssl3t64 openssl openssl-provider-legacy libssh2-1t64 \
+    && apt-get upgrade -y \
     && if [ ${TARGETARCH} = "arm" ]; then apt-get install -y \
     sudo \
     gpg \
@@ -86,7 +86,8 @@ RUN if [ ${TARGETARCH} = "x86_64" ]; then file="ioncube_loaders_lin_x86-64.tar.g
 RUN mkdir -p /var/www/.nvm  && export NVM_DIR="/var/www/.nvm" \
     && wget -qO- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.1/install.sh | PROFILE=/var/www/.bashrc bash \
     && [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh" \
-    && nvm install 20 && nvm use 20
+    && nvm install 20 && nvm use 20 \
+    && npm install -g tar@latest
 
 RUN mkdir /var/www/composer && chmod 777 -R  /var/www/composer
 

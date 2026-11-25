@@ -46,10 +46,10 @@ If you're interested in having a specific version updated, feel free to contact 
 | php:7.4               | Nov 28, 2022 | Inactive      |
 | php:8.1               | Nov 25, 2024 | Inactive      |
 | php:8.2               | Dec 8, 2024  | Inactive      |
-| php:8.3               | Nov 23, 2026 | Inactive      |
+| php:8.3               | Dec 31, 2027 | Inactive      |
 | php:8.4               | Dec 31, 2028 | Active        |
 | php:8.5               | Dec 31, 2029 | Active        |
-| php:arm64v8           | N/A          | Inactive      |
+| php:8.6               | Dec 31, 2030 | Active        |
 | elasticsearch:1.7     | Jan 16, 2017 | Inactive      |
 | elasticsearch:2.4     | Apr 28, 2017 | Inactive      |
 | elasticsearch:5.2     | Jul 31, 2018 | Inactive      |
@@ -99,6 +99,7 @@ If you're interested in having a specific version updated, feel free to contact 
 | varnish:latest        | N/A          | Active        |
 
 EOL Sources:
+- [PHP](https://endoflife.date/php)
 - [NGINX](https://endoflife.date/nginx)
 - [OpenSearch](https://endoflife.date/opensearch)
 - [Elasticsearch](https://www.elastic.co/support/eol)
@@ -124,12 +125,14 @@ EOL Sources:
 ```shell
 docker buildx build --platform linux/amd64,linux/arm64,linux/arm/v7 -t sashas777/magento-php:8.4-cli --push -f php/8.4-cli/Dockerfile .
 docker buildx build --platform linux/amd64,linux/arm64 -t sashas777/magento-php:8.5-cli --push -f php/8.5-cli/Dockerfile .
+docker buildx build --platform linux/amd64,linux/arm64 -t sashas777/magento-php:8.6-cli --push -f php/8.6-cli/Dockerfile .
 ```
 
 ## PHP FPM
 ```shell
 docker buildx build --platform linux/amd64,linux/arm64,linux/arm/v7 -t sashas777/magento-php:8.4-fpm --push -f php/8.4-fpm/Dockerfile .
 docker buildx build --platform linux/amd64,linux/arm64 -t sashas777/magento-php:8.5-fpm --push -f php/8.5-fpm/Dockerfile .
+docker buildx build --platform linux/amd64,linux/arm64 -t sashas777/magento-php:8.6-fpm --push -f php/8.6-fpm/Dockerfile .
 ```
 
 ## Nginx

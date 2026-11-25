@@ -80,7 +80,9 @@ If you're interested in having a specific version updated, feel free to contact 
 | redis:7.4             | Dec 1, 2029  | Active        |
 | redis:8.0             | Dec 1, 2026  | Active        |
 | redis:latest          | N/A          | Active        |
-| valkey:9.0            | N/A          | Active        |
+| valkey:9.0            | Oct 21, 2028 | Active        |
+| valkey:9.2            | Nov 19, 2031 | Active        |
+| valkey:latest         | N/A          | Active        |
 | rabbitmq:4.2          | Jul 31, 2026 | Active        |
 | rabbitmq:4.3          | Jan 31, 2027 | Active        |
 | rabbitmq:4.4          | Jul 31, 2027 | Active        |
@@ -99,6 +101,7 @@ EOL Sources:
 - [OpenSearch](https://endoflife.date/opensearch)
 - [Elasticsearch](https://www.elastic.co/support/eol)
 - [Redis](https://redis.io/docs/latest/operate/rs/installing-upgrading/product-lifecycle/)
+- [Valkey](https://endoflife.date/valkey)
 - [Varnish](https://varnish-cache.org/releases/)
 - [RabbitMQ](https://www.rabbitmq.com/support.html)
 - [ActiveMQ Artemis](https://activemq.apache.org/components/artemis/download/past_releases)
@@ -134,11 +137,6 @@ docker buildx build --platform linux/amd64,linux/arm64,linux/arm/v7 -t sashas777
 docker buildx build --platform linux/amd64,linux/arm64,linux/arm/v7 -t sashas777/magento-nginx:latest --push -f  nginx/latest/Dockerfile .
 ```
 
-## ElasticSearch
-```shell
-docker buildx build --platform linux/amd64,linux/arm64 -t sashas777/magento-elasticsearch:8.11.4 --push -f elasticsearch/8.11/Dockerfile .
-```
-
 ## OpenSearch
 ```shell
 docker buildx build --platform linux/amd64,linux/arm64 -t sashas777/magento-opensearch:3.0 --push -f opensearch/3.0/Dockerfile .
@@ -165,6 +163,8 @@ docker buildx build --platform linux/amd64,linux/arm64,linux/arm/v7 -t sashas777
 ## Valkey
 ```shell
 docker buildx build --platform linux/amd64,linux/arm64 -t sashas777/magento-valkey:9.0 --push -f valkey/9.0/Dockerfile .
+docker buildx build --platform linux/amd64,linux/arm64 -t sashas777/magento-valkey:9.2 --push -f valkey/9.2/Dockerfile .
+docker buildx build --platform linux/amd64,linux/arm64 -t sashas777/magento-valkey:latest --push -f valkey/latest/Dockerfile .
 ```
 
 ## RabbitMQ

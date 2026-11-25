@@ -74,9 +74,12 @@ If you're interested in having a specific version updated, feel free to contact 
 | nginx:1.31            | May, 2027    | Active        |
 | nginx:latest          | N/A          | Active        |
 | redis:5.0             | Dec 31, 2019 | Inactive      |
-| redis:6.2             | Feb 28, 2025 | Inactive      |
-| redis:7.0             | N/A          | Inactive      |
-| redis:7.2             | Feb, 2026    | Inactive      |
+| redis:6.2             | Apr 1, 2027  | Active        |
+| redis:7.0             | Apr 1, 2024  | Inactive      |
+| redis:7.2             | Dec 1, 2029  | Active        |
+| redis:7.4             | Dec 1, 2029  | Active        |
+| redis:8.0             | Dec 1, 2026  | Active        |
+| redis:latest          | N/A          | Active        |
 | valkey:9.0            | N/A          | Active        |
 | rabbitmq:4.2          | Jul 31, 2026 | Active        |
 | rabbitmq:4.3          | Jan 31, 2027 | Active        |
@@ -152,7 +155,11 @@ docker buildx build --platform linux/amd64,linux/arm64 -t sashas777/magento-varn
 
 ## Redis
 ```shell
+docker buildx build --platform linux/amd64,linux/arm64,linux/arm/v7 -t sashas777/magento-redis:6.2 --push -f redis/6.2/Dockerfile .
 docker buildx build --platform linux/amd64,linux/arm64,linux/arm/v7 -t sashas777/magento-redis:7.2 --push -f redis/7.2/Dockerfile .
+docker buildx build --platform linux/amd64,linux/arm64,linux/arm/v7 -t sashas777/magento-redis:7.4 --push -f redis/7.4/Dockerfile .
+docker buildx build --platform linux/amd64,linux/arm64,linux/arm/v7 -t sashas777/magento-redis:8.0 --push -f redis/8.0/Dockerfile .
+docker buildx build --platform linux/amd64,linux/arm64,linux/arm/v7 -t sashas777/magento-redis:latest --push -f redis/latest/Dockerfile .
 ```
 
 ## Valkey
@@ -170,7 +177,6 @@ docker buildx build --platform linux/amd64,linux/arm64,linux/arm/v7 -t sashas777
 
 ## ActiveMQ Artemis
 ```shell
-docker buildx build --platform linux/amd64,linux/arm64 -t sashas777/magento-activemq-artemis:2.39 --push -f activemq-artemis/2.39/Dockerfile .
 docker buildx build --platform linux/amd64,linux/arm64 -t sashas777/magento-activemq-artemis:2.57 -t sashas777/magento-activemq-artemis:2 --push -f activemq-artemis/2.57/Dockerfile .
 docker buildx build --platform linux/amd64,linux/arm64 -t sashas777/magento-activemq-artemis:latest --push -f activemq-artemis/latest/Dockerfile .
 ```

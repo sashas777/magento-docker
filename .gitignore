@@ -2,3 +2,5 @@
 /vendor/
 docker-compose.yml
 *.swp
+.agents/
+

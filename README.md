@@ -77,7 +77,9 @@ If you're interested in having a specific version updated, feel free to contact 
 | redis:7.2             | Feb, 2026    | Inactive      |
 | valkey:9.0            | N/A          | Active        |
 | rabbitmq:4.2          | N/A          | Active        |
-| activemq-artemis:2    | N/A          | Active        |
+| activemq-artemis:2.39 | Mar 17, 2025 | Inactive      |
+| activemq-artemis:2.57 | N/A          | Active        |
+| activemq-artemis:latest| N/A         | Active        |
 | varnish:6.5           | Sep 15, 2021 | Inactive      |
 | varnish:7.0           | Sep 15, 2022 | Inactive      |
 | varnish:7.1           | Mar 15, 2023 | Inactive      |
@@ -89,6 +91,7 @@ EOL Sources:
 - [Redis](https://redis.io/docs/latest/operate/rs/installing-upgrading/product-lifecycle/)
 - [Varnish](https://varnish-cache.org/releases/)
 - [RabbitMQ](https://www.rabbitmq.com/support.html)
+- [ActiveMQ Artemis](https://activemq.apache.org/components/artemis/download/past_releases)
 
 # Related Resources
 
@@ -155,7 +158,9 @@ docker buildx build --platform linux/amd64,linux/arm64,linux/arm/v7 -t sashas777
 
 ## ActiveMQ Artemis
 ```shell
-docker buildx build --platform linux/amd64,linux/arm64 -t sashas777/magento-activemq-artemis:2 --push -f activemq-artemis/2/Dockerfile .
+docker buildx build --platform linux/amd64,linux/arm64 -t sashas777/magento-activemq-artemis:2.39 --push -f activemq-artemis/2.39/Dockerfile .
+docker buildx build --platform linux/amd64,linux/arm64 -t sashas777/magento-activemq-artemis:2.57 -t sashas777/magento-activemq-artemis:2 --push -f activemq-artemis/2.57/Dockerfile .
+docker buildx build --platform linux/amd64,linux/arm64 -t sashas777/magento-activemq-artemis:latest --push -f activemq-artemis/latest/Dockerfile .
 ```
 
 ## Serverless App Runner (NodeJS runner)

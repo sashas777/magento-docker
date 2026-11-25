@@ -1,4 +1,4 @@
-FROM apache/activemq-artemis:2.39.0-alpine
+FROM apache/artemis:2.57.0-alpine
 
 USER root
 
@@ -12,3 +12,4 @@ EXPOSE 61616 8161
 
 # HEALTHCHECK
 HEALTHCHECK --interval=10s --timeout=5s --retries=3 CMD curl --silent --fail http://localhost:8161/ || exit 1
+

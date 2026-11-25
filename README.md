@@ -21,7 +21,7 @@ To make things even easier, we’ve included a CLI interface for quickly creatin
 
 | Adobe Commerce Version | PHP      | Elasticsearch | OpenSearch | nginx      | Redis / Valkey | Varnish            | RabbitMQ           | ActiveMQ Artemis   |
 |------------------------|----------|---------------|------------|------------|----------------|--------------------|--------------------|--------------------|
-| 2.4.9.x                | 8.5, 8.4, 8.3 | 8.11          | 3          | 1.30       | 9.0, 7.2       | 8.0                | 4.2                | 2                  |
+| 2.4.9.x                | 8.5, 8.4, 8.3 | 8.11          | 3          | 1.30       | 9.0, 7.2       | 8.0                | 4.3, 4.2           | 2                  |
 | 2.4.8.x                | 8.4, 8.3 | 8.11          | 3          | 1.28       | 7.2           | 7.7                | -                  | -                  |
 | 2.4.7.x                | 8.3, 8.2 | 8.11          | 2.12       | 1.24       | 7.2           | 7.5                | -                  | -                  |
 | 2.4.6.x                | 8.2, 8.1 | 8.11, 7.17    | 2.12, 2.5  | 1.24, 1.22 | 7.2, 7.0      | 7.5, 7.3, 7.1      | -                  | -                  |
@@ -78,7 +78,10 @@ If you're interested in having a specific version updated, feel free to contact 
 | redis:7.0             | N/A          | Inactive      |
 | redis:7.2             | Feb, 2026    | Inactive      |
 | valkey:9.0            | N/A          | Active        |
-| rabbitmq:4.2          | N/A          | Active        |
+| rabbitmq:4.2          | Jul 31, 2026 | Active        |
+| rabbitmq:4.3          | Jan 31, 2027 | Active        |
+| rabbitmq:4.4          | Jul 31, 2027 | Active        |
+| rabbitmq:latest       | N/A          | Active        |
 | activemq-artemis:2.39 | Mar 17, 2025 | Inactive      |
 | activemq-artemis:2.57 | N/A          | Active        |
 | activemq-artemis:latest| N/A         | Active        |
@@ -160,6 +163,9 @@ docker buildx build --platform linux/amd64,linux/arm64 -t sashas777/magento-valk
 ## RabbitMQ
 ```shell
 docker buildx build --platform linux/amd64,linux/arm64,linux/arm/v7 -t sashas777/magento-rabbitmq:4.2 --push -f rabbitmq/4.2/Dockerfile .
+docker buildx build --platform linux/amd64,linux/arm64,linux/arm/v7 -t sashas777/magento-rabbitmq:4.3 --push -f rabbitmq/4.3/Dockerfile .
+docker buildx build --platform linux/amd64,linux/arm64,linux/arm/v7 -t sashas777/magento-rabbitmq:4.4 --push -f rabbitmq/4.4/Dockerfile .
+docker buildx build --platform linux/amd64,linux/arm64,linux/arm/v7 -t sashas777/magento-rabbitmq:latest --push -f rabbitmq/latest/Dockerfile .
 ```
 
 ## ActiveMQ Artemis

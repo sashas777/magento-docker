@@ -65,12 +65,12 @@ If you're interested in having a specific version updated, feel free to contact 
 | opensearch:3.0        | N/A          | Active        |
 | opensearch:3.7        | N/A          | Active        |
 | nginx:1.9             | 2015         | Inactive      |
-| nginx:1.21            | 2021         | Inactive      |
+| nginx:1.21            | Jun 21, 2022 | Inactive      |
 | nginx:1.22            | Apr 11, 2023 | Inactive      |
 | nginx:1.24            | Apr 23, 2024 | Inactive      |
-| nginx:1.30            | N/A          | Active        |
+| nginx:1.30            | Apr, 2027    | Active        |
+| nginx:1.31            | May, 2027    | Active        |
 | nginx:latest          | N/A          | Active        |
-| nginx:arm64v8         | N/A          | Inactive      |
 | redis:5.0             | Dec 31, 2019 | Inactive      |
 | redis:6.2             | Feb 28, 2025 | Inactive      |
 | redis:7.0             | N/A          | Inactive      |
@@ -87,6 +87,7 @@ If you're interested in having a specific version updated, feel free to contact 
 | varnish:8.0           | N/A          | Active        |
 
 EOL Sources:
+- [NGINX](https://endoflife.date/nginx)
 - [Elasticsearch](https://www.elastic.co/support/eol)
 - [Redis](https://redis.io/docs/latest/operate/rs/installing-upgrading/product-lifecycle/)
 - [Varnish](https://varnish-cache.org/releases/)
@@ -119,8 +120,8 @@ docker buildx build --platform linux/amd64,linux/arm64 -t sashas777/magento-php:
 
 ## Nginx
 ```shell
-docker buildx build --platform linux/amd64,linux/arm64,linux/arm/v7 -t sashas777/magento-nginx:1.24 --push -f  nginx/1.24/Dockerfile .
 docker buildx build --platform linux/amd64,linux/arm64,linux/arm/v7 -t sashas777/magento-nginx:1.30 --push -f  nginx/1.30/Dockerfile .
+docker buildx build --platform linux/amd64,linux/arm64,linux/arm/v7 -t sashas777/magento-nginx:1.31 --push -f  nginx/1.31/Dockerfile .
 docker buildx build --platform linux/amd64,linux/arm64,linux/arm/v7 -t sashas777/magento-nginx:latest --push -f  nginx/latest/Dockerfile .
 ```
 

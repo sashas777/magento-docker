@@ -94,7 +94,9 @@ If you're interested in having a specific version updated, feel free to contact 
 | varnish:7.0           | Sep 15, 2022 | Inactive      |
 | varnish:7.1           | Mar 15, 2023 | Inactive      |
 | varnish:7.5           | Mar 15, 2025 | Inactive      |
-| varnish:8.0           | N/A          | Active        |
+| varnish:8.0           | Mar 15, 2026 | Active        |
+| varnish:9.1           | Sep 16, 2028 | Active        |
+| varnish:latest        | N/A          | Active        |
 
 EOL Sources:
 - [NGINX](https://endoflife.date/nginx)
@@ -147,8 +149,9 @@ docker buildx build --platform linux/amd64,linux/arm64 -t sashas777/magento-open
 
 ## Varnish
 ```shell
-docker buildx build --platform linux/amd64,linux/arm64,linux/arm/v7 -t sashas777/magento-varnish:7.5 --push -f varnish/7.5/Dockerfile .
 docker buildx build --platform linux/amd64,linux/arm64 -t sashas777/magento-varnish:8.0 --push -f varnish/8.0/Dockerfile .
+docker buildx build --platform linux/amd64,linux/arm64 -t sashas777/magento-varnish:9.1 --push -f varnish/9.1/Dockerfile .
+docker buildx build --platform linux/amd64,linux/arm64 -t sashas777/magento-varnish:latest --push -f varnish/latest/Dockerfile .
 ```
 
 ## Redis
